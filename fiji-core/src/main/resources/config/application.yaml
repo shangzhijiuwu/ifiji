@@ -1,0 +1,25 @@
+debug: true
+server:
+  port: 8888
+spring:
+  datasource:
+    name: zaikejian_fiji
+    url: jdbc:mysql://127.0.0.1:3306/zaikejian_fiji
+    username: root
+    password: 3013689
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  thymeleaf:
+    cache: false
+mybatis:
+  type-aliases-package: me.iszhenyu.ifiji.model
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    default-fetch-size: 100
+    default-statement-timeout: 30
+    map-underscore-to-camel-case: true
+logging:
+  level:
+    org.springframework.web: DEBUG
+    me.iszhenyu: TRACE
+    root: INFO
