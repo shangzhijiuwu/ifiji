@@ -18,6 +18,7 @@ mybatis:
     default-fetch-size: 100
     default-statement-timeout: 30
     map-underscore-to-camel-case: true
+  type-handlers-package: me.iszhenyu.ifiji.dao.typehandler
 logging:
   level:
     org.springframework.web: DEBUG
