@@ -7,7 +7,7 @@
     <groupId>me.iszhenyu</groupId>
     <artifactId>ifiji</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <name>ifiji</name>
     <description>frame base on springboot</description>
@@ -59,14 +59,16 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.32</version>
         </dependency>
-
-
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>3.2.0</version>
+        </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
         </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
