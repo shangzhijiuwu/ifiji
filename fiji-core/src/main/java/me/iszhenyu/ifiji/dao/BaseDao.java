@@ -30,7 +30,7 @@ public abstract class BaseDao<T extends BaseModel> {
 		getMapper().insert(model);
 	}
 
-	public void batchInsert(List<T> models) {
+	public void batchInsert(Collection<T> models) {
 		getMapper().batchInsert(models);
 	}
 
@@ -42,7 +42,7 @@ public abstract class BaseDao<T extends BaseModel> {
 		}
 	}
 
-	public void batchUpdate(List<T> models) {
+	public void batchUpdate(Collection<T> models) {
 		for (T model : models) {
 			update(model);
 		}
@@ -56,7 +56,7 @@ public abstract class BaseDao<T extends BaseModel> {
 		getMapper().delete(model);
 	}
 
-	public void batchDelete(List<T> models) {
+	public void batchDelete(Collection<T> models) {
 		getMapper().batchDelete(models);
 	}
 

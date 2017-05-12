@@ -25,8 +25,6 @@ public interface BaseMapper<T> {
 
 	void delete(T model);
 
-	void deleteByUuid(Serializable uuid);
-
 	void batchDelete(Collection<T> models);
 
 }

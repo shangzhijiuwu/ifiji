@@ -3,8 +3,8 @@ server:
   port: 8888
 spring:
   datasource:
-    name: zaikejian_fiji
-    url: jdbc:mysql://127.0.0.1:3306/zaikejian_fiji
+    name: fiji
+    url: jdbc:mysql://127.0.0.1:3306/base_on_springboot
     username: root
     password: 3013689
     driver-class-name: com.mysql.jdbc.Driver
@@ -13,12 +13,12 @@ spring:
     cache: false
 mybatis:
   type-aliases-package: me.iszhenyu.ifiji.dao.mapper
+  type-handlers-package: me.iszhenyu.ifiji.dao.typehandler
   mapper-locations: classpath:mapper/*.xml
   configuration:
     default-fetch-size: 100
     default-statement-timeout: 30
     map-underscore-to-camel-case: true
-  type-handlers-package: me.iszhenyu.ifiji.dao.typehandler
 logging:
   level:
     org.springframework.web: DEBUG
