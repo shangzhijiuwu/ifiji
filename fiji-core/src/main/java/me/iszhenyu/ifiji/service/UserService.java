@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 /**
  * Created by xiaoz on 2017/5/11.
  */
@@ -16,7 +18,11 @@ public class UserService {
 	private UserDao userDao;
 
 	public User getUser() {
-		return userDao.get(1);
+		User user = userDao.get(1);
+		user.setCreatedAt(LocalDateTime.now());
+		user.setUpdatedAt(LocalDateTime.now());
+		userDao.update(user);
+		return user;
 	}
 
 	public void createUser() {

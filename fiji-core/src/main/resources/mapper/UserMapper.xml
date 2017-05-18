@@ -5,4 +5,5 @@
 <mapper namespace="me.iszhenyu.ifiji.dao.mapper.UserMapper">
 
 
+
 </mapper>
