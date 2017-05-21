@@ -15,6 +15,7 @@
     <modules>
         <module>fiji-core</module>
         <module>fiji-api</module>
+        <module>fiji-util</module>
     </modules>
 
     <parent>
