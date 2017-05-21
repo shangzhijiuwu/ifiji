@@ -11,21 +11,4 @@
         (#{username}, #{passwordHash}, #{passwordSalt}, #{mobileNumber}, #{email}, #{avatarUrl}, #{status}, #{deleted}, #{createdAt}, #{updatedAt})
     </insert>
 
-    <update id="update" parameterType="User">
-        update sys_user set
-        <set>
-            <if test="username != null">
-                username = #{username},
-            </if>
-            <if test="email != null">
-                email = #{email},
-            </if>
-            <if test="mobileNumber != null">
-                mobile_number = #{mobileNumber}
-            </if>
-            updated_at = sysdate
-        </set>
-        where id = #{id}
-    </update>
-
 </mapper>
