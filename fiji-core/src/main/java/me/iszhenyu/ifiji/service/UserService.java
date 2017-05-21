@@ -1,5 +1,6 @@
 package me.iszhenyu.ifiji.service;
 
+import me.iszhenyu.ifiji.constant.UserStatus;
 import me.iszhenyu.ifiji.dao.UserDao;
 import me.iszhenyu.ifiji.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ public class UserService {
 		user.setPasswordSalt("456");
 		user.setMobileNumber("15110223333");
 		user.setEmail("zhen.yu@17zuoye.com");
+		user.setStatus(UserStatus.ACTIVE);
 		user.setDeleted(false);
 		user.setCreatedAt(LocalDateTime.now());
 		user.setUpdatedAt(LocalDateTime.now());

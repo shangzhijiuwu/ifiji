@@ -9,7 +9,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 /**
  * Created by xiaoz on 2017/5/11.
  */
-//@MapperScan("me.iszhenyu.ifiji.dao.mapper")
 @SpringBootApplication()
 public class IFijiApplication {
 
