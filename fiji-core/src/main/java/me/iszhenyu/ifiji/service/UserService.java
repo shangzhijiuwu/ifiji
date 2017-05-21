@@ -25,9 +25,18 @@ public class UserService {
 		return user;
 	}
 
-	public void createUser() {
+	public User createUser() {
 		User user = new User();
+		user.setUsername("this is a test");
+		user.setPasswordHash("123");
+		user.setPasswordSalt("456");
+		user.setMobileNumber("15110223333");
+		user.setEmail("zhen.yu@17zuoye.com");
+		user.setDeleted(false);
+		user.setCreatedAt(LocalDateTime.now());
+		user.setUpdatedAt(LocalDateTime.now());
 		userDao.insert(user);
+		return user;
 	}
 
 }

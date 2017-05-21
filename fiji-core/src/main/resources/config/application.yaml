@@ -1,16 +1,11 @@
-debug: true
-server:
-  port: 8888
 spring:
   datasource:
-    name: fiji
+    name: ifiji
     url: jdbc:mysql://127.0.0.1:3306/base_on_springboot
     username: root
     password: 3013689
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
-  thymeleaf:
-    cache: false
 mybatis:
   type-aliases-package: me.iszhenyu.ifiji.dao.mapper
   type-handlers-package: me.iszhenyu.ifiji.dao.typehandler
@@ -19,8 +14,3 @@ mybatis:
     default-fetch-size: 100
     default-statement-timeout: 30
     map-underscore-to-camel-case: true
-logging:
-  level:
-    org.springframework.web: DEBUG
-    me.iszhenyu: TRACE
-    root: INFO
