@@ -19,10 +19,9 @@ public class UserService {
 	private UserDao userDao;
 
 	public User getUser() {
-		User user = userDao.get(1);
-		user.setCreatedAt(LocalDateTime.now());
-		user.setUpdatedAt(LocalDateTime.now());
-		userDao.update(user);
+		User user = userDao.get(16);
+		user.setMobileNumber("15122223333");
+		userDao.updateMobileNumber(user);
 		return user;
 	}
 

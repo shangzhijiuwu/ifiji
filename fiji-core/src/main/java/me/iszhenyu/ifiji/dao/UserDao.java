@@ -19,4 +19,8 @@ public class UserDao extends BaseDao<User> {
 	protected BaseMapper<User> getMapper() {
 		return userMapper;
 	}
+
+	public void updateMobileNumber(User user) {
+		userMapper.updateMobileNumber(user);
+	}
 }

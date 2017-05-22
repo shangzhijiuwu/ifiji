@@ -19,7 +19,7 @@ public class UserController {
 
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public User test() {
-		return userService.createUser();
+		return userService.getUser();
 	}
 
 }

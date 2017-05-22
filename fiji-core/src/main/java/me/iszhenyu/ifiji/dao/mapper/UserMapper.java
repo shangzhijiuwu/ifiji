@@ -22,4 +22,6 @@ public interface UserMapper extends BaseMapper<User> {
 
 	@Select("select * from sys_user where username = #{username}")
 	User getByUsername(@Param("username") String username);
+
+	void updateMobileNumber(User user);
 }

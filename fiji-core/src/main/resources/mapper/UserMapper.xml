@@ -11,4 +11,11 @@
         (#{username}, #{passwordHash}, #{passwordSalt}, #{mobileNumber}, #{email}, #{avatarUrl}, #{status}, #{deleted}, #{createdAt}, #{updatedAt})
     </insert>
 
+    <update id="updateMobileNumber" parameterType="User">
+        UPDATE sys_user SET
+          mobile_number=#{mobileNumber},
+          updated_at=#{updatedAt}
+        WHERE id=#{id}
+    </update>
+
 </mapper>
