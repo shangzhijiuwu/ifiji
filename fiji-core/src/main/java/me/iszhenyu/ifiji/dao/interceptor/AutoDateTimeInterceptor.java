@@ -8,6 +8,7 @@ import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.plugin.*;
 
 import java.sql.Connection;
+import java.time.LocalDateTime;
 import java.util.Properties;
 
 /**
@@ -26,11 +27,20 @@ public class AutoDateTimeInterceptor implements Interceptor {
 	@Override
 	public Object intercept(Invocation invocation) throws Throwable {
 		RoutingStatementHandler handler = (RoutingStatementHandler) invocation.getTarget();
-		StatementHandler delegate = (StatementHandler) ReflectUtils.getFieldValue(handler.getClass(), "delegate");
-		BoundSql boundSql = delegate.getBoundSql();
-		Object obj = boundSql.getParameterObject();
-		if (obj instanceof BaseModel) {
-
+		StatementHandler delegate = (StatementHandler) ReflectUtils.getFieldValue(handler, "delegate");
+		if (delegate != null) {
+			BoundSql boundSql = delegate.getBoundSql();
+			String sql = boundSql.getSql().toLowerCase();
+			Object obj = boundSql.getParameterObject();
+			if (obj instanceof BaseModel) {
+				LocalDateTime rightNow = LocalDateTime.now();
+				if (sql.indexOf("insert") > 0) {
+					((BaseModel) obj).setCreatedAt(rightNow);
+					((BaseModel) obj).setUpdatedAt(rightNow);
+				} else if (sql.indexOf("update") > 0) {
+					((BaseModel) obj).setUpdatedAt(rightNow);
+				}
+			}
 		}
 		return invocation.proceed();
 	}

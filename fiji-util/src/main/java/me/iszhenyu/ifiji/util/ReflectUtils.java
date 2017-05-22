@@ -17,12 +17,19 @@ public class ReflectUtils {
 
 	/* ************************************************** 字段相关的方法 ******************************************************* */
 
-	public static Object getFieldValue(Class<?> sourceClass, String fieldName) {
-		Field field = getField(sourceClass, fieldName, false, false);
+	public static Object getFieldValue(Object object, String fieldName) {
+		Field field = getField(object.getClass(), fieldName);
 		if (field == null) {
 			return null;
 		}
-		return null;
+		field.setAccessible(true);
+		try {
+			return field.get(object) ;
+		} catch(IllegalArgumentException e) {
+			return null;
+		} catch (IllegalAccessException e) {
+			return null;
+		}
 	}
 
 	/**
