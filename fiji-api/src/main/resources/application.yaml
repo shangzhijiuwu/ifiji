@@ -6,6 +6,6 @@ spring:
     cache: false
 logging:
   level:
-    org.springframework.web: DEBUG
-    me.iszhenyu: TRACE
+    org.springframework.web: INFO
+    me.iszhenyu: DEBUG
     root: INFO

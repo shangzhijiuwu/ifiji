@@ -28,15 +28,13 @@ public class UserService {
 
 	public User createUser() {
 		User user = new User();
-		user.setUsername("this is a test2");
+		user.setUsername("this is a test3");
 		user.setPasswordHash("123");
 		user.setPasswordSalt("456");
-		user.setMobileNumber("15110223332");
-		user.setEmail("zhen.yu.2@17zuoye.com");
+		user.setMobileNumber("15110223334");
+		user.setEmail("zhen.yu.3@17zuoye.com");
 		user.setStatus(UserStatus.ACTIVE);
 		user.setDeleted(false);
-//		user.setCreatedAt(LocalDateTime.now());
-//		user.setUpdatedAt(LocalDateTime.now());
 		userDao.insert(user);
 		return user;
 	}

@@ -34,10 +34,10 @@ public class AutoDateTimeInterceptor implements Interceptor {
 			Object obj = boundSql.getParameterObject();
 			if (obj instanceof BaseModel) {
 				LocalDateTime rightNow = LocalDateTime.now();
-				if (sql.indexOf("insert") > 0) {
+				if (sql.indexOf("insert") == 0) {
 					((BaseModel) obj).setCreatedAt(rightNow);
 					((BaseModel) obj).setUpdatedAt(rightNow);
-				} else if (sql.indexOf("update") > 0) {
+				} else if (sql.indexOf("update") == 0) {
 					((BaseModel) obj).setUpdatedAt(rightNow);
 				}
 			}
