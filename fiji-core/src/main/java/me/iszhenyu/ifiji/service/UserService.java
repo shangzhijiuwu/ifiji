@@ -4,10 +4,8 @@ import me.iszhenyu.ifiji.constant.UserStatus;
 import me.iszhenyu.ifiji.dao.UserDao;
 import me.iszhenyu.ifiji.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 
 /**
  * Created by xiaoz on 2017/5/11.
