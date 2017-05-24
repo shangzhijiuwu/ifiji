@@ -32,7 +32,7 @@ public class UserService {
 		user.setEmail("zhen.yu.3@17zuoye.com");
 		user.setStatus(UserStatus.ACTIVE);
 		user.setDeleted(false);
-		userDao.insert(user);
+		userDao.save(user);
 		return user;
 	}
 

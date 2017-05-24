@@ -11,20 +11,20 @@ public interface BaseMapper<T> {
 
 	T get(Serializable id);
 
-	List<T> find();
+	List<T> listAll();
 
-	List<T> findByIds(Collection<Serializable> ids);
+	List<T> listByIds(Collection<Serializable> ids);
 
-	void insert(T model);
+	void save(T model);
 
-	void batchInsert(Collection<T> models);
+	void batchSave(Collection<T> models);
 
 	int update(T model);
 
-	void delete(Serializable id);
+	void remove(Serializable id);
 
-	void delete(T model);
+	void remove(T model);
 
-	void batchDelete(Collection<T> models);
+	void batchRemove(Collection<T> models);
 
 }

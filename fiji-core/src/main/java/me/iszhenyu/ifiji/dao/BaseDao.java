@@ -18,20 +18,20 @@ public abstract class BaseDao<T extends BaseModel> {
 		return getMapper().get(id);
 	}
 
-	public List<T> find() {
-		return getMapper().find();
+	public List<T> listAll() {
+		return getMapper().listAll();
 	}
 
-	public List<T> findByIds(Collection<Serializable> ids) {
-		return getMapper().findByIds(ids);
+	public List<T> listByIds(Collection<Serializable> ids) {
+		return getMapper().listByIds(ids);
 	}
 
-	public void insert(T model) {
-		getMapper().insert(model);
+	public void save(T model) {
+		getMapper().save(model);
 	}
 
-	public void batchInsert(Collection<T> models) {
-		getMapper().batchInsert(models);
+	public void batchSave(Collection<T> models) {
+		getMapper().batchSave(models);
 	}
 
 	//更新乐观锁
@@ -48,16 +48,16 @@ public abstract class BaseDao<T extends BaseModel> {
 		}
 	}
 
-	public void delete(Serializable id) {
-		getMapper().delete(id);
+	public void remove(Serializable id) {
+		getMapper().remove(id);
 	}
 
-	public void delete(T model) {
-		getMapper().delete(model);
+	public void remove(T model) {
+		getMapper().remove(model);
 	}
 
-	public void batchDelete(Collection<T> models) {
-		getMapper().batchDelete(models);
+	public void batchRemove(Collection<T> models) {
+		getMapper().batchRemove(models);
 	}
 
 }
