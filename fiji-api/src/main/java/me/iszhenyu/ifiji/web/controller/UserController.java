@@ -1,6 +1,6 @@
 package me.iszhenyu.ifiji.web.controller;
 
-import me.iszhenyu.ifiji.model.User;
+import me.iszhenyu.ifiji.model.UserDO;
 import me.iszhenyu.ifiji.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +18,7 @@ public class UserController {
 	private UserService userService;
 
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
-	public User test() {
+	public UserDO test() {
 		return userService.getUser();
 	}
 

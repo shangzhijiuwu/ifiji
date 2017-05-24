@@ -13,7 +13,7 @@ import me.iszhenyu.ifiji.constant.UserStatus;
 @Getter
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class User extends BaseModel {
+public class UserDO extends BaseDO {
 	private String username;
 	private String passwordHash;
 	private String passwordSalt;

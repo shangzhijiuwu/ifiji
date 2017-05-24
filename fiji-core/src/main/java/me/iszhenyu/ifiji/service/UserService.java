@@ -2,7 +2,7 @@ package me.iszhenyu.ifiji.service;
 
 import me.iszhenyu.ifiji.constant.UserStatus;
 import me.iszhenyu.ifiji.dao.UserDao;
-import me.iszhenyu.ifiji.model.User;
+import me.iszhenyu.ifiji.model.UserDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +16,15 @@ public class UserService {
 	@Autowired
 	private UserDao userDao;
 
-	public User getUser() {
-		User user = userDao.getByMobile("15122223333");
+	public UserDO getUser() {
+		UserDO user = userDao.getByMobile("15122223333");
 //		user.setMobileNumber("15122223333");
 //		userDao.updateMobileNumber(user);
 		return user;
 	}
 
-	public User createUser() {
-		User user = new User();
+	public UserDO createUser() {
+		UserDO user = new UserDO();
 		user.setUsername("this is a test3");
 		user.setPasswordHash("123");
 		user.setPasswordSalt("456");

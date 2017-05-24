@@ -1,6 +1,6 @@
 package me.iszhenyu.ifiji.web.controller;
 
-import me.iszhenyu.ifiji.model.User;
+import me.iszhenyu.ifiji.model.UserDO;
 import me.iszhenyu.ifiji.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +23,7 @@ public class AuthController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public User doLogin() {
+	public UserDO doLogin() {
 		return null;
 	}
 

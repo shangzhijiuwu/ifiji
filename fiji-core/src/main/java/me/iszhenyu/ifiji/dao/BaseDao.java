@@ -1,7 +1,7 @@
 package me.iszhenyu.ifiji.dao;
 
 import me.iszhenyu.ifiji.dao.mapper.BaseMapper;
-import me.iszhenyu.ifiji.model.BaseModel;
+import me.iszhenyu.ifiji.model.BaseDO;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by xiaoz on 2017/5/11.
  */
-public abstract class BaseDao<T extends BaseModel> {
+public abstract class BaseDao<T extends BaseDO> {
 
 	protected abstract BaseMapper<T> getMapper();
 

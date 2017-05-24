@@ -1,6 +1,6 @@
 package me.iszhenyu.ifiji.dao.interceptor;
 
-import me.iszhenyu.ifiji.model.BaseModel;
+import me.iszhenyu.ifiji.model.BaseDO;
 import me.iszhenyu.ifiji.util.ReflectUtils;
 import org.apache.ibatis.executor.statement.RoutingStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
@@ -32,13 +32,13 @@ public class AutoDateTimeInterceptor implements Interceptor {
 			BoundSql boundSql = delegate.getBoundSql();
 			String sql = boundSql.getSql().toLowerCase();
 			Object obj = boundSql.getParameterObject();
-			if (obj instanceof BaseModel) {
+			if (obj instanceof BaseDO) {
 				LocalDateTime rightNow = LocalDateTime.now();
 				if (sql.indexOf("insert") == 0) {
-					((BaseModel) obj).setCreatedAt(rightNow);
-					((BaseModel) obj).setUpdatedAt(rightNow);
+					((BaseDO) obj).setCreatedAt(rightNow);
+					((BaseDO) obj).setUpdatedAt(rightNow);
 				} else if (sql.indexOf("update") == 0) {
-					((BaseModel) obj).setUpdatedAt(rightNow);
+					((BaseDO) obj).setUpdatedAt(rightNow);
 				}
 			}
 		}
