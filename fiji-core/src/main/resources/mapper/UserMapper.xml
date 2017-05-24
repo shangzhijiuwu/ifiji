@@ -3,11 +3,24 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="me.iszhenyu.ifiji.dao.mapper.UserMapper">
+    
+    <resultMap id="User" type="User">
+        <result property="deleted" column="is_deleted"/>
+    </resultMap>
+
+    <select id="get" resultMap="User">
+        SELECT * FROM sys_user WHERE id = #{id}
+    </select>
+
+    <select id="getByMobileNumber" resultMap="User">
+        SELECT * FROM sys_user
+        WHERE mobile_number = #{mobile}
+    </select>
 
     <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
-      insert into sys_user
+      INSERT INTO sys_user
         (username, password_hash, password_salt, mobile_number, email, avatar_url, status, deleted, created_at, updated_at)
-      values
+      VALUES
         (#{username}, #{passwordHash}, #{passwordSalt}, #{mobileNumber}, #{email}, #{avatarUrl}, #{status}, #{deleted}, #{createdAt}, #{updatedAt})
     </insert>
 

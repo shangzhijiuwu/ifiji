@@ -20,6 +20,10 @@ public class UserDao extends BaseDao<User> {
 		return userMapper;
 	}
 
+	public User getByMobile(String mobile) {
+		return userMapper.getByMobileNumber(mobile);
+	}
+
 	public void updateMobileNumber(User user) {
 		userMapper.updateMobileNumber(user);
 	}

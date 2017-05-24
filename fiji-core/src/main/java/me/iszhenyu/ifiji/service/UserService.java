@@ -17,9 +17,9 @@ public class UserService {
 	private UserDao userDao;
 
 	public User getUser() {
-		User user = userDao.get(16);
-		user.setMobileNumber("15122223333");
-		userDao.updateMobileNumber(user);
+		User user = userDao.getByMobile("15122223333");
+//		user.setMobileNumber("15122223333");
+//		userDao.updateMobileNumber(user);
 		return user;
 	}
 
