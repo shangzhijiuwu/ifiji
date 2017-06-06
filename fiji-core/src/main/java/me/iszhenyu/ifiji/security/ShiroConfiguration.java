@@ -55,9 +55,6 @@ public class ShiroConfiguration {
 	private Collection<SessionListener> listeners;
 
 	@Autowired(required = false)
-	private ShiroFilterCustomizer shiroFilterCustomizer;
-
-	@Autowired(required = false)
 	private JdbcPermissionDefinitionsLoader jdbcPermissionDefinitionsLoader;
 
 	/**
@@ -118,16 +115,6 @@ public class ShiroConfiguration {
 		CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
 		cookieRememberMeManager.setCookie(cookie);
 		cookieRememberMeManager.setCipherService(cipherService);
-//		if (shiroCookieProperties.getCipherKey() != null) {
-//			cookieRememberMeManager.setCipherKey(shiroCookieProperties.getCipherKey().getBytes());
-//		} else {
-//			if (shiroCookieProperties.getEncryptionCipherKey() != null) {
-//				cookieRememberMeManager.setEncryptionCipherKey(shiroCookieProperties.getEncryptionCipherKey().getBytes());
-//			}
-//			if (shiroCookieProperties.getDecryptionCipherKey() != null) {
-//				cookieRememberMeManager.setDecryptionCipherKey(shiroCookieProperties.getDecryptionCipherKey().getBytes());
-//			}
-//		}
 		cookieRememberMeManager.setSerializer(serializer);
 		return cookieRememberMeManager;
 	}
@@ -208,9 +195,6 @@ public class ShiroConfiguration {
 
 		Map<String, Filter> filterMap = new LinkedHashMap<>();
 		filterMap.put("authc", formLoginFilter());
-		if (shiroFilterCustomizer != null) {
-			filterMap = shiroFilterCustomizer.customize(filterMap);
-		}
 		shiroFilter.setFilters(filterMap); // filters 属性用于定义自己的过滤器
 
 		Map<String, String> filterChains = new LinkedHashMap<>();
