@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Created by xiaoz on 2017/5/9.
  */
-public class JdbcPermissionDefinitionsLoader implements FactoryBean<Map<String, String>> {
+class JdbcPermissionDefinitionsLoader implements FactoryBean<Map<String, String>> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(JdbcPermissionDefinitionsLoader.class);
 	private static final String PERMISSION_STRING = "perms[\"%s\"]";
@@ -23,7 +23,7 @@ public class JdbcPermissionDefinitionsLoader implements FactoryBean<Map<String, 
 	private DataSource dataSource;
 	private String sql;
 
-	public JdbcPermissionDefinitionsLoader(DataSource dataSource) {
+	JdbcPermissionDefinitionsLoader(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
 
@@ -49,7 +49,7 @@ public class JdbcPermissionDefinitionsLoader implements FactoryBean<Map<String, 
 		return filters;
 	}
 
-	public void setSql(String sql) {
+	void setSql(String sql) {
 		this.sql = sql;
 	}
 
