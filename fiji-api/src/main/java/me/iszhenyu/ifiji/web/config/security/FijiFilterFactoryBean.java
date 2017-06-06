@@ -21,10 +21,10 @@ import java.util.Set;
 /**
  * Created by xiaoz on 2017/5/9.
  */
-public class MainFilterFactoryBean extends ShiroFilterFactoryBean {
+public class FijiFilterFactoryBean extends ShiroFilterFactoryBean {
 	private Set<String> ignoreExt;
 
-	MainFilterFactoryBean() {
+	FijiFilterFactoryBean() {
 		super();
 		ignoreExt = new HashSet<>();
 		ignoreExt.add(".jpg");

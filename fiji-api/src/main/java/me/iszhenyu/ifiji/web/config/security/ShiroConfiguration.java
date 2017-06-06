@@ -97,7 +97,7 @@ public class ShiroConfiguration {
 	@ConditionalOnMissingBean(name = "mainRealm")
 	@DependsOn(value = {"dataSource", "lifecycleBeanPostProcessor", "credentialsMatcher"})
 	public Realm mainRealm(DataSource dataSource, CredentialsMatcher credentialsMatcher) {
-		MainRealm realm = new MainRealm();
+		FijiRealm realm = new FijiRealm();
 		realm.setDataSource(dataSource);
 		realm.setCredentialsMatcher(credentialsMatcher);
 		return realm;
@@ -220,7 +220,7 @@ public class ShiroConfiguration {
 	}
 
 	private ShiroFilterFactoryBean getShiroFilterFactoryBean(SecurityManager securityManager) throws Exception {
-		MainFilterFactoryBean shiroFilter = new MainFilterFactoryBean();
+		FijiFilterFactoryBean shiroFilter = new FijiFilterFactoryBean();
 		shiroFilter.setSecurityManager(securityManager);
 		shiroFilter.setLoginUrl("/auth/login");
 		shiroFilter.setSuccessUrl("/");
