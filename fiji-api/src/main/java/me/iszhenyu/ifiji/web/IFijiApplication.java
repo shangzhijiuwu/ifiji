@@ -9,7 +9,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 /**
  * Created by xiaoz on 2017/5/11.
  */
-@SpringBootApplication()
+@SpringBootApplication
 public class IFijiApplication {
 
 	public static void main(String[] args) {
