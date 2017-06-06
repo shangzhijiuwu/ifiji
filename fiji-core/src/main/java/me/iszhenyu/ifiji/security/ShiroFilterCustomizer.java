@@ -1,4 +1,4 @@
-package me.iszhenyu.ifiji.web.config.security;
+package me.iszhenyu.ifiji.security;
 
 import javax.servlet.Filter;
 import java.util.Map;

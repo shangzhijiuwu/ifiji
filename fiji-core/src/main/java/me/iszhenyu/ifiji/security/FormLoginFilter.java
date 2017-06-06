@@ -1,4 +1,4 @@
-package me.iszhenyu.ifiji.web.config.security;
+package me.iszhenyu.ifiji.security;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;

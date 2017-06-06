@@ -1,4 +1,4 @@
-package me.iszhenyu.ifiji.web.config.security;
+package me.iszhenyu.ifiji.security;
 
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.cache.CacheManager;
