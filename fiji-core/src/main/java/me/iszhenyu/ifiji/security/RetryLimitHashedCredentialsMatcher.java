@@ -19,7 +19,7 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
 	private int retryTimes = 5;
 
 	public RetryLimitHashedCredentialsMatcher(CacheManager cacheManager) {
-		passwordRetryCache = cacheManager.getCache("passwordRetryCache");
+		passwordRetryCache = cacheManager.getCache(CacheName.PASSWORD_RETRY_CACHE);
 	}
 
 	@Override

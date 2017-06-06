@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ehcache name="shirocache">
 
-    <diskStore path="java.io.tmpdir"/>
+    <diskStore path="java.io.tmpdir/shiro-ehcache"/>
 
     <!-- 登录记录缓存 锁定10分钟 -->
-    <cache name="passwordRetryCache"
+    <cache name="shiroPasswordRetryCache"
            maxEntriesLocalHeap="2000"
            eternal="false"
            timeToIdleSeconds="3600"
@@ -13,7 +13,7 @@
            statistics="true">
     </cache>
 
-    <cache name="authorizationCache"
+    <cache name="shiroAuthorizationCache"
            maxEntriesLocalHeap="2000"
            eternal="false"
            timeToIdleSeconds="3600"
@@ -22,7 +22,7 @@
            statistics="true">
     </cache>
 
-    <cache name="authenticationCache"
+    <cache name="shiroAuthenticationCache"
            maxEntriesLocalHeap="2000"
            eternal="false"
            timeToIdleSeconds="3600"
@@ -31,7 +31,7 @@
            statistics="true">
     </cache>
 
-    <cache name="shiro-activeSessionCache"
+    <cache name="shiroActiveSessionCache"
            maxEntriesLocalHeap="2000"
            eternal="false"
            timeToIdleSeconds="3600"

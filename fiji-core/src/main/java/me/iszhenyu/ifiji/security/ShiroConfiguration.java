@@ -29,12 +29,9 @@ import org.apache.shiro.web.session.mgt.WebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 
 import javax.servlet.Filter;
 import javax.sql.DataSource;
@@ -67,14 +64,11 @@ public class ShiroConfiguration {
 	 * Shiro生命周期处理器
 	 */
 	@Bean
-	@ConditionalOnMissingBean
 	public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
 		return new LifecycleBeanPostProcessor();
 	}
 
 	@Bean
-	@ConditionalOnMissingBean
-	@DependsOn("lifecycleBeanPostProcessor")
 	public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
 		DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
 		defaultAdvisorAutoProxyCreator.setProxyTargetClass(true);
@@ -82,8 +76,13 @@ public class ShiroConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnMissingBean
-	@DependsOn("cacheManager")
+	public CacheManager cacheManager() {
+		EhCacheManager ehCacheManager = new EhCacheManager();
+		ehCacheManager.setCacheManagerConfigFile("classpath:config/ehcache-shiro.xml");
+		return ehCacheManager;
+	}
+
+	@Bean
 	public CredentialsMatcher credentialsMatcher(CacheManager cacheManager) {
 		RetryLimitHashedCredentialsMatcher credentialsMatcher = new RetryLimitHashedCredentialsMatcher(cacheManager);
 		credentialsMatcher.setHashAlgorithmName("MD5");
@@ -94,26 +93,16 @@ public class ShiroConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnMissingBean(name = "mainRealm")
-	@DependsOn(value = {"dataSource", "lifecycleBeanPostProcessor", "credentialsMatcher"})
-	public Realm mainRealm(DataSource dataSource, CredentialsMatcher credentialsMatcher) {
+	public Realm fijiRealm(DataSource dataSource, CredentialsMatcher credentialsMatcher) {
 		FijiRealm realm = new FijiRealm();
 		realm.setDataSource(dataSource);
 		realm.setCredentialsMatcher(credentialsMatcher);
+		realm.setAuthenticationCacheName(CacheName.AUTHENTICATION_CACHE);
+		realm.setAuthorizationCacheName(CacheName.AUTHORIZATION_CACHE);
 		return realm;
 	}
 
 	@Bean
-	@ConditionalOnClass(name = {"org.apache.shiro.cache.ehcache.EhCacheManager"})
-	@ConditionalOnMissingBean(name = "cacheManager")
-	public CacheManager cacheManager() {
-		EhCacheManager ehCacheManager = new EhCacheManager();
-		ehCacheManager.setCacheManagerConfigFile("classpath:config/ehcache-shiro.xml");
-		return ehCacheManager;
-	}
-
-	@Bean
-	@ConditionalOnMissingBean(Cookie.class)
 	public Cookie rememberMeCookie() {
 		SimpleCookie rememberMeCookie = new SimpleCookie();
 		rememberMeCookie.setName("rememberMe");
@@ -125,7 +114,6 @@ public class ShiroConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnMissingBean(RememberMeManager.class)
 	public RememberMeManager rememberMeManager(Cookie cookie) {
 		CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
 		cookieRememberMeManager.setCookie(cookie);
@@ -145,7 +133,6 @@ public class ShiroConfiguration {
 	}
 
 	@Bean
-	@DependsOn(value = {"cacheManager", "rememberMeManager", "mainRealm"})
 	public DefaultSecurityManager securityManager(Realm realm, RememberMeManager rememberMeManager,
                                                   CacheManager cacheManager, SessionManager sessionManager) {
 		DefaultSecurityManager sm = new DefaultWebSecurityManager();
@@ -161,10 +148,9 @@ public class ShiroConfiguration {
 	////////////////////////////////////////
 
 	@Bean
-	@ConditionalOnMissingBean
 	public SessionDAO sessionDAO(CacheManager cacheManager) {
 		EnterpriseCacheSessionDAO sessionDAO = new EnterpriseCacheSessionDAO();
-		sessionDAO.setActiveSessionsCacheName("shiro-acciveSessionCache");
+		sessionDAO.setActiveSessionsCacheName(CacheName.ACTIVE_SESSION_CACHE);
 		SessionIdGenerator sessionIdGenerator = BeanUtils.instantiate(JavaUuidSessionIdGenerator.class);
 		sessionDAO.setSessionIdGenerator(sessionIdGenerator);
 		sessionDAO.setCacheManager(cacheManager);
@@ -172,20 +158,17 @@ public class ShiroConfiguration {
 	}
 
 	@Bean
-	@DependsOn(value = {"cacheManager", "sessionDAO"})
 	public WebSessionManager sessionManager(CacheManager cacheManager, SessionDAO sessionDAO) {
 		DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
 		sessionManager.setCacheManager(cacheManager);
-//		sessionManager.setGlobalSessionTimeout(36000); // 默认30分钟
+		sessionManager.setGlobalSessionTimeout(36000); // 默认30分钟
 		sessionManager.setSessionDAO(sessionDAO);
 		sessionManager.setSessionListeners(listeners);
 		return sessionManager;
 	}
 
-	@Bean(name = "sessionValidationScheduler")
-	@DependsOn(value = {"sessionManager"})
-	@ConditionalOnMissingBean(SessionValidationScheduler.class)
-	public SessionValidationScheduler quartzSessionValidationScheduler(DefaultWebSessionManager sessionManager) {
+	@Bean
+	public SessionValidationScheduler sessionValidationScheduler(DefaultWebSessionManager sessionManager) {
 		QuartzSessionValidationScheduler quartzSessionValidationScheduler = new QuartzSessionValidationScheduler(sessionManager);
 		sessionManager.setSessionValidationSchedulerEnabled(true); // 开启定时验证Session
 		sessionManager.setSessionValidationInterval(36000); // 每隔一小时验证Session
@@ -199,8 +182,6 @@ public class ShiroConfiguration {
 	////////////////////////////////////////
 
 	@Bean(name = "shiroFilter")
-	@DependsOn("securityManager")
-	@ConditionalOnMissingBean
 	public FilterRegistrationBean filterRegistrationBean(SecurityManager securityManager) throws Exception {
 		FilterRegistrationBean filterRegistration = new FilterRegistrationBean();
 		//该值缺省为false,表示生命周期由SpringApplicationContext管理,设置为true则表示由ServletContainer管理
@@ -212,7 +193,6 @@ public class ShiroConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnMissingBean
 	public JdbcPermissionDefinitionsLoader jdbcFilterChainsLoader(DataSource dataSource) {
 		JdbcPermissionDefinitionsLoader jdbcPermissionDefinitionsLoader = new JdbcPermissionDefinitionsLoader(dataSource);
 		jdbcPermissionDefinitionsLoader.setSql("SELECT url, permission FROM sys_resource WHERE permission != '' AND url != ''");
