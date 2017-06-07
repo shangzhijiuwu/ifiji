@@ -24,14 +24,17 @@ import java.util.Set;
 public class FijiFilterFactoryBean extends ShiroFilterFactoryBean {
 	private Set<String> ignoreExt;
 
-	FijiFilterFactoryBean() {
-		super();
+	FijiFilterFactoryBean(SecurityManager securityManager) {
 		ignoreExt = new HashSet<>();
 		ignoreExt.add(".jpg");
 		ignoreExt.add(".png");
 		ignoreExt.add(".gif");
 		ignoreExt.add(".js");
 		ignoreExt.add(".css");
+		this.setSecurityManager(securityManager);
+		this.setLoginUrl("/auth/login");
+		this.setSuccessUrl("/");
+		this.setUnauthorizedUrl("/error/401");
 	}
 
 	@Override

@@ -187,11 +187,7 @@ public class ShiroConfiguration {
 	}
 
 	private ShiroFilterFactoryBean getShiroFilterFactoryBean(SecurityManager securityManager) throws Exception {
-		FijiFilterFactoryBean shiroFilter = new FijiFilterFactoryBean();
-		shiroFilter.setSecurityManager(securityManager);
-		shiroFilter.setLoginUrl("/auth/login");
-		shiroFilter.setSuccessUrl("/");
-		shiroFilter.setUnauthorizedUrl("/error/401");
+		FijiFilterFactoryBean shiroFilter = new FijiFilterFactoryBean(securityManager);
 
 		Map<String, Filter> filterMap = new LinkedHashMap<>();
 		filterMap.put("authc", formLoginFilter());
@@ -214,13 +210,7 @@ public class ShiroConfiguration {
 	}
 
 	private FormLoginFilter formLoginFilter() {
-		FormLoginFilter filter = new FormLoginFilter();
-		filter.setLoginUrl("/auth/login");
-		filter.setSuccessUrl("/");
-		filter.setUsernameParam("username");
-		filter.setPasswordParam("password");
-		filter.setRememberMeParam("rememberMe");
-		return filter;
+		return new FormLoginFilter();
 	}
 
 	private Map<String, Filter> instantiateFilterClasses(Map<String, Class<? extends Filter>> filters) {

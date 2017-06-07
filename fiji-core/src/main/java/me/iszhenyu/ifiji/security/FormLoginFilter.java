@@ -13,7 +13,15 @@ import java.io.IOException;
 /**
  * Created by xiaoz on 2017/5/9.
  */
-public class FormLoginFilter extends FormAuthenticationFilter {
+class FormLoginFilter extends FormAuthenticationFilter {
+
+	FormLoginFilter() {
+		this.setLoginUrl("/auth/login");
+		this.setSuccessUrl("/");
+		this.setUsernameParam("username");
+		this.setPasswordParam("password");
+		this.setRememberMeParam("rememberMe");
+	}
 
 	@Override
 	protected void setFailureAttribute(ServletRequest request, AuthenticationException ae) {
