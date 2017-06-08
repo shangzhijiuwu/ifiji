@@ -13,7 +13,7 @@ import java.io.IOException;
  * @author zhen.yu
  * @since 2017/6/8
  */
-public class StatelessAccessControlFilter extends AccessControlFilter {
+class StatelessAccessControlFilter extends AccessControlFilter {
 
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
