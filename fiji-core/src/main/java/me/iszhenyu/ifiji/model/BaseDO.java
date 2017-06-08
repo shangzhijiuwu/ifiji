@@ -18,6 +18,6 @@ import java.util.Date;
 public class BaseDO {
 	protected Long id;
 	protected Boolean deleted; 	// 删除标记
-	protected Date gmtCreate; 	// 创建时间
+	protected Date gmtCreated; 	// 创建时间
 	protected Date gmtModified; // 修改时间
 }

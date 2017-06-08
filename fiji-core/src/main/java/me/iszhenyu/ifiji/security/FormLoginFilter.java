@@ -35,10 +35,6 @@ class FormLoginFilter extends FormAuthenticationFilter {
 			HttpServletResponse response = (HttpServletResponse) servletResponse;
 			String contentType = request.getContentType();
 			if (contentType != null && contentType.contains("application/json")) {
-//				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//				response.setCharacterEncoding("UTF-8");
-//				PrintWriter writer = response.getWriter();
-//				writer.print("{\"error\":\"登录超时，请重新登录。\"}");
 				response.setCharacterEncoding("UTF-8");
 				WebUtils.toHttp(response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "{\"error\":\"登录超时，请重新登录。\"}");
 			} else {

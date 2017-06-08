@@ -36,7 +36,7 @@ public class AutoDateTimeInterceptor implements Interceptor {
 			if (obj instanceof BaseDO) {
 				Date rightNow = TimeUtils.gmtNow();
 				if (sql.indexOf("insert") == 0) {
-					((BaseDO) obj).setGmtCreate(rightNow);
+					((BaseDO) obj).setGmtCreated(rightNow);
 					((BaseDO) obj).setGmtModified(rightNow);
 				} else if (sql.indexOf("update") == 0) {
 					((BaseDO) obj).setGmtModified(rightNow);

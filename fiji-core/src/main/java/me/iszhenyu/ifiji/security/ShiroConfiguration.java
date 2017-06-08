@@ -18,6 +18,7 @@ import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.session.mgt.eis.SessionIdGenerator;
 import org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
@@ -42,7 +43,7 @@ import java.util.Map;
 /**
  * Created by xiaoz on 2017/5/9.
  */
-@Configuration
+//@Configuration
 public class ShiroConfiguration {
 
 	@Autowired(required = false)
@@ -85,7 +86,6 @@ public class ShiroConfiguration {
 		credentialsMatcher.setHashAlgorithmName("MD5");
 		credentialsMatcher.setHashIterations(2);
 		credentialsMatcher.setStoredCredentialsHexEncoded(true);
-		credentialsMatcher.setRetryTimes(3);
 		return credentialsMatcher;
 	}
 
@@ -94,7 +94,10 @@ public class ShiroConfiguration {
 		FijiRealm realm = new FijiRealm();
 		realm.setDataSource(dataSource);
 		realm.setCredentialsMatcher(credentialsMatcher);
+		realm.setCachingEnabled(true);
+		realm.setAuthenticationCachingEnabled(true);
 		realm.setAuthenticationCacheName(CacheName.AUTHENTICATION_CACHE);
+		realm.setAuthorizationCachingEnabled(true);
 		realm.setAuthorizationCacheName(CacheName.AUTHORIZATION_CACHE);
 		return realm;
 	}
@@ -130,17 +133,32 @@ public class ShiroConfiguration {
 		return sm;
 	}
 
+	/**
+	 *  开启shiro aop注解支持.
+	 *  使用代理方式;所以需要开启代码支持;
+	 */
+	@Bean
+	public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager){
+		AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
+		authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
+		return authorizationAttributeSourceAdvisor;
+	}
+
 	/////////////////////////////////////////
 	//              session 相关           //
 	////////////////////////////////////////
 
 	@Bean
-	public SessionDAO sessionDAO(CacheManager cacheManager) {
+	public SessionIdGenerator sessionIdGenerator() {
+		return new JavaUuidSessionIdGenerator();
+	}
+
+	@Bean
+	public SessionDAO sessionDAO(CacheManager cacheManager, SessionIdGenerator sessionIdGenerator) {
 		EnterpriseCacheSessionDAO sessionDAO = new EnterpriseCacheSessionDAO();
-		sessionDAO.setActiveSessionsCacheName(CacheName.ACTIVE_SESSION_CACHE);
-		SessionIdGenerator sessionIdGenerator = BeanUtils.instantiate(JavaUuidSessionIdGenerator.class);
-		sessionDAO.setSessionIdGenerator(sessionIdGenerator);
 		sessionDAO.setCacheManager(cacheManager);
+		sessionDAO.setSessionIdGenerator(sessionIdGenerator);
+		sessionDAO.setActiveSessionsCacheName(CacheName.ACTIVE_SESSION_CACHE);
 		return sessionDAO;
 	}
 
@@ -189,16 +207,21 @@ public class ShiroConfiguration {
 	private ShiroFilterFactoryBean getShiroFilterFactoryBean(SecurityManager securityManager) throws Exception {
 		FijiFilterFactoryBean shiroFilter = new FijiFilterFactoryBean(securityManager);
 
+		// 自定义过滤器
 		Map<String, Filter> filterMap = new LinkedHashMap<>();
 		filterMap.put("authc", formLoginFilter());
 		shiroFilter.setFilters(filterMap); // filters 属性用于定义自己的过滤器
 
+		// 拦截器
 		Map<String, String> filterChains = new LinkedHashMap<>();
 		filterChains.put("/favicon.ico", "anon");
 		filterChains.put("/assets/**", "anon");
 		filterChains.put("/error/**", "anon");
 		filterChains.put("/auth/login", "anon");
 		filterChains.put("/auth/logout", "logout");
+		//配置记住我或认证通过可以访问的地址
+		filterChains.put("/index", "user");
+		filterChains.put("/", "user");
 		filterChains.put("/**", "authc");
 		if (jdbcPermissionDefinitionsLoader != null) {
 			Map<String, String> permissionUrlMap = jdbcPermissionDefinitionsLoader.getObject();
@@ -211,18 +234,5 @@ public class ShiroConfiguration {
 
 	private FormLoginFilter formLoginFilter() {
 		return new FormLoginFilter();
-	}
-
-	private Map<String, Filter> instantiateFilterClasses(Map<String, Class<? extends Filter>> filters) {
-		Map<String, Filter> filterMap = null;
-		if (filters != null && !filters.isEmpty()) {
-			filterMap = new LinkedHashMap<>();
-			for (String name : filters.keySet()) {
-				Class<? extends Filter> clazz = filters.get(name);
-				Filter f = BeanUtils.instantiate(clazz);
-				filterMap.put(name, f);
-			}
-		}
-		return filterMap;
 	}
 }
