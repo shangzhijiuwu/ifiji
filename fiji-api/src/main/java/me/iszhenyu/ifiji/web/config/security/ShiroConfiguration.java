@@ -10,6 +10,9 @@ import org.apache.shiro.web.mgt.DefaultWebSubjectFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * @author zhen.yu
  * @since 2017/6/7
@@ -18,9 +21,26 @@ import org.springframework.context.annotation.Configuration;
 public class ShiroConfiguration {
 
     @Bean
+    public  StatelessAuthorizingRealm statelessRealm(){
+        return new StatelessAuthorizingRealm();
+    }
+
+    @Bean
+    public StatelessAccessControlFilter statelessAuthcFilter(){
+        return new StatelessAccessControlFilter();
+    }
+
+    @Bean
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
         factoryBean.setSecurityManager(securityManager);
+        factoryBean.getFilters().put("statelessAuthc", statelessAuthcFilter());
+
+        //拦截器.
+        Map<String,String> filterChainDefinitionMap = new LinkedHashMap<>();
+        filterChainDefinitionMap.put("/**", "statelessAuthc");
+        factoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+
         return factoryBean;
     }
 
@@ -41,6 +61,7 @@ public class ShiroConfiguration {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setSubjectFactory(subjectFactory());
         securityManager.setSessionManager(sessionManager());
+        securityManager.setRealm(statelessRealm());
 
         /*
          * 禁用使用Sessions 作为存储策略的实现，但它没有完全地禁用Sessions
