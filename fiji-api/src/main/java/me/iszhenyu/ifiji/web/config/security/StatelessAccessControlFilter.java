@@ -1,6 +1,5 @@
 package me.iszhenyu.ifiji.web.config.security;
 
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.web.filter.AccessControlFilter;
 
@@ -24,7 +23,7 @@ class StatelessAccessControlFilter extends AccessControlFilter {
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         StatelessAuthenticationToken token = new StatelessAuthenticationToken();
         try {
-            SecurityUtils.getSubject().login(token);
+            getSubject(request, response).login(token);
         } catch (AuthenticationException e) {
             onLoginFail(response);
             return false;

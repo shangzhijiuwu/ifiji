@@ -1,15 +1,10 @@
 package me.iszhenyu.ifiji.web.controller;
 
-import me.iszhenyu.ifiji.exception.FijiException;
 import me.iszhenyu.ifiji.exception.ValidationException;
-import me.iszhenyu.ifiji.web.vo.ErrorVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
 
@@ -29,11 +24,4 @@ class BaseController {
         }
     }
 
-    @ExceptionHandler({FijiException.class})
-    public ResponseEntity<ErrorVO> exception(FijiException e) {
-        ErrorVO restError = new ErrorVO();
-        restError.setStatus(HttpStatus.BAD_REQUEST.value());
-        restError.setErrorMessage(e.getShowMessage());
-        return new ResponseEntity<>(restError, e.getStatus());
-    }
 }

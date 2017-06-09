@@ -17,7 +17,7 @@ import java.util.Map;
  * @author zhen.yu
  * @since 2017/6/7
  */
-@Configuration
+//@Configuration
 public class ShiroConfiguration {
 
     @Bean
@@ -38,6 +38,11 @@ public class ShiroConfiguration {
 
         //拦截器.
         Map<String,String> filterChainDefinitionMap = new LinkedHashMap<>();
+        filterChainDefinitionMap.put("/favicon.ico", "anon");
+        filterChainDefinitionMap.put("/assets/**", "anon");
+        filterChainDefinitionMap.put("/error/**", "anon");
+        filterChainDefinitionMap.put("/auth/login", "anon");
+        filterChainDefinitionMap.put("/auth/logout", "logout");
         filterChainDefinitionMap.put("/**", "statelessAuthc");
         factoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 

@@ -4,6 +4,7 @@ import me.iszhenyu.ifiji.model.UserDO;
 import me.iszhenyu.ifiji.service.UserService;
 import me.iszhenyu.ifiji.web.form.LoginForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,7 +21,8 @@ public class AuthController extends BaseController {
 	private UserService userService;
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public UserDO login(@Validated LoginForm form) {
+	public UserDO login(@Validated LoginForm form, BindingResult bindingResult) {
+		this.validateForm(bindingResult);
 		return null;
 	}
 
