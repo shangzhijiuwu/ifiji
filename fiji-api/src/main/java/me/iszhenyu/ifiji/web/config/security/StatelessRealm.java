@@ -14,11 +14,11 @@ import org.apache.shiro.subject.PrincipalCollection;
  * @author zhen.yu
  * @since 2017/6/8
  */
-public class StatelessAuthorizingRealm extends AuthorizingRealm {
+public class StatelessRealm extends AuthorizingRealm {
 
     @Override
     public boolean supports(AuthenticationToken token) {
-        return token instanceof StatelessAuthenticationToken;
+        return token instanceof StatelessToken;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class StatelessAuthorizingRealm extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        StatelessAuthenticationToken statelessToken = (StatelessAuthenticationToken) token;
+        StatelessToken statelessToken = (StatelessToken) token;
         String username = (String) statelessToken.getPrincipal();
         //根据用户名获取密钥（和客户端的一样）
         String key = getKey(username);

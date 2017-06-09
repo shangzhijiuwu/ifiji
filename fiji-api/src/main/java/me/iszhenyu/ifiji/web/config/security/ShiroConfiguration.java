@@ -17,12 +17,12 @@ import java.util.Map;
  * @author zhen.yu
  * @since 2017/6/7
  */
-//@Configuration
+@Configuration
 public class ShiroConfiguration {
 
     @Bean
-    public  StatelessAuthorizingRealm statelessRealm(){
-        return new StatelessAuthorizingRealm();
+    public StatelessRealm statelessRealm(){
+        return new StatelessRealm();
     }
 
     @Bean

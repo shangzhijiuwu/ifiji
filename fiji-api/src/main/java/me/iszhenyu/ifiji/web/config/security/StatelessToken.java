@@ -8,7 +8,7 @@ import java.util.Map;
  * @author zhen.yu
  * @since 2017/6/8
  */
-class StatelessAuthenticationToken implements AuthenticationToken {
+class StatelessToken implements AuthenticationToken {
 
     private static final long serialVersionUID = -7007179065911805829L;
 
@@ -16,10 +16,10 @@ class StatelessAuthenticationToken implements AuthenticationToken {
     private String clientDigest;
     private Map<String, String> params;
 
-    public StatelessAuthenticationToken() {
+    public StatelessToken() {
     }
 
-    public StatelessAuthenticationToken(String username, String clientDigest) {
+    public StatelessToken(String username, String clientDigest) {
         this.username = username;
         this.clientDigest = clientDigest;
     }

@@ -21,7 +21,7 @@ class StatelessAccessControlFilter extends AccessControlFilter {
 
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-        StatelessAuthenticationToken token = new StatelessAuthenticationToken();
+        StatelessToken token = new StatelessToken();
         try {
             getSubject(request, response).login(token);
         } catch (AuthenticationException e) {
