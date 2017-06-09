@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
-public class ErrorVo {
+public class ErrorVO {
     private int status;
     private String errorMessage;
 }

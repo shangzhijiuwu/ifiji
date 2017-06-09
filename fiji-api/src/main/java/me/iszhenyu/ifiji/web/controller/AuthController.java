@@ -14,18 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/auth")
-public class AuthController {
+public class AuthController extends BaseController {
 
 	@Autowired
 	private UserService userService;
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login() {
-		return "login";
-	}
-
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public UserDO doLogin(@Validated LoginForm form) {
+	public UserDO login(@Validated LoginForm form) {
 		return null;
 	}
 
