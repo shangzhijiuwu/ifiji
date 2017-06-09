@@ -1,13 +1,15 @@
 package me.iszhenyu.ifiji.exception;
 
-import me.iszhenyu.ifiji.constant.FijiError;
 import me.iszhenyu.ifiji.constant.LogLevel;
+import org.springframework.http.HttpStatus;
 
 /**
  * @author zhen.yu
  * @since 2017/6/8
  */
 public class ValidationException extends FijiException {
+
+    private static final long serialVersionUID = -8360053753340671580L;
 
     public ValidationException() {
     }
@@ -25,13 +27,8 @@ public class ValidationException extends FijiException {
     }
 
     @Override
-    public int getCode() {
-        return FijiError.ILLEGAL.getCode();
-    }
-
-    @Override
-    public String getType() {
-        return FijiError.ILLEGAL.getType();
+    public HttpStatus getStatus() {
+        return HttpStatus.BAD_REQUEST;
     }
 
     @Override

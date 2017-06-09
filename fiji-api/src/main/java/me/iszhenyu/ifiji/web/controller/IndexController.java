@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2017/6/8
  */
 @RestController
-public class IndexController {
+public class IndexController extends BaseController {
 
     @RequestMapping("/hello3")
     public String hello3(){

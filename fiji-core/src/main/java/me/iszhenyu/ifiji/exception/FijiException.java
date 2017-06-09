@@ -2,6 +2,7 @@ package me.iszhenyu.ifiji.exception;
 
 import me.iszhenyu.ifiji.constant.LogLevel;
 import me.iszhenyu.ifiji.util.StringUtils;
+import org.springframework.http.HttpStatus;
 
 /**
  * @author zhen.yu
@@ -9,8 +10,9 @@ import me.iszhenyu.ifiji.util.StringUtils;
  */
 public abstract class FijiException extends RuntimeException {
 
-    private int code;
-    private String type;
+    private static final long serialVersionUID = -735473505163301070L;
+
+    private HttpStatus status;
     private LogLevel logLevel;
 
     private String methodAndParams;
@@ -31,9 +33,7 @@ public abstract class FijiException extends RuntimeException {
         super(cause);
     }
 
-    public abstract int getCode();
-
-    public abstract String getType();
+    public abstract HttpStatus getStatus();
 
     public abstract LogLevel getLogLevel();
 
