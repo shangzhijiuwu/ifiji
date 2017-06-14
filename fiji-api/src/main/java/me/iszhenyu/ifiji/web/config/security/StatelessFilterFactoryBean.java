@@ -1,4 +1,4 @@
-package me.iszhenyu.ifiji.security;
+package me.iszhenyu.ifiji.web.config.security;
 
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -21,10 +21,10 @@ import java.util.Set;
 /**
  * Created by xiaoz on 2017/5/9.
  */
-public class FijiFilterFactoryBean extends ShiroFilterFactoryBean {
+public class StatelessFilterFactoryBean extends ShiroFilterFactoryBean {
 	private Set<String> ignoreExt;
 
-	FijiFilterFactoryBean(SecurityManager securityManager) {
+	StatelessFilterFactoryBean(SecurityManager securityManager) {
 		ignoreExt = new HashSet<>();
 		ignoreExt.add(".jpg");
 		ignoreExt.add(".png");

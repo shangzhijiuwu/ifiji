@@ -8,5 +8,4 @@ interface CacheName {
     String PASSWORD_RETRY_CACHE = "shiroPasswordRetryCache";
     String AUTHORIZATION_CACHE = "shiroAuthorizationCache";
     String AUTHENTICATION_CACHE = "shiroAuthenticationCache";
-    String ACTIVE_SESSION_CACHE = "shiroActiveSessionCache";
 }

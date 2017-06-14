@@ -11,3 +11,6 @@ logging:
     org.springframework.web: INFO
     me.iszhenyu: DEBUG
     root: INFO
+jwt:
+  key: mykey
+  token-name: jwt-token
