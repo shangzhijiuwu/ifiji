@@ -1,10 +1,8 @@
 package me.iszhenyu.ifiji.web.config.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import me.iszhenyu.ifiji.util.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.web.filter.AccessControlFilter;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
 import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,38 +14,64 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * @author zhen.yu
- * @since 2017/6/8
+ * @since 2017/6/15
  */
-class StatelessFilter extends AccessControlFilter {
+public class StatelessFilter extends AuthenticatingFilter {
 
-    private Logger logger = LoggerFactory.getLogger(StatelessFilter.class);
+    private static final Logger log = LoggerFactory.getLogger(StatelessFilter.class);
 
     @Autowired
     private JwtProperties jwtProperties;
 
     @Override
-    protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
-        if (isLoginRequest(request, response)) {
-            return true;
+    public void setLoginUrl(String loginUrl) {
+        String previous = getLoginUrl();
+        if (previous != null) {
+            this.appliedPaths.remove(previous);
         }
-
-        String jwtToken = parseToken(request);
-        if (StringUtils.isEmpty(jwtToken)) {
-            return false;
+        super.setLoginUrl(loginUrl);
+        if (log.isTraceEnabled()) {
+            log.trace("Adding login url to applied paths.");
         }
-        Claims claims = Jwts.parser().setSigningKey(jwtProperties.getKey()).parseClaimsJws(jwtToken).getBody();
-        String principal = (String) SecurityUtils.getSubject().getPrincipal();
-        return !isTokenExpired(claims.getExpiration()) && claims.getSubject().equals(principal);
+        this.appliedPaths.put(getLoginUrl(), null);
     }
 
-    private boolean isTokenExpired(Date expiredAt) {
-        Date now = Calendar.getInstance().getTime();
-        return expiredAt.before(now);
+    @Override
+    protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) throws Exception {
+        if (isLoginRequest(request, response)) {
+            String username = getUsername(request);
+            String password = getPassword(request);
+            return createToken(username, password, request, response);
+        }
+        String token = parseToken(request);
+        return new JwtAuthenticationToken(token);
+    }
+
+    @Override
+    protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
+        boolean loggedIn = false;
+        if (isLoginRequest(request, response))  {
+            loggedIn = executeLogin(request, response);
+        }
+        if (!loggedIn) {
+            sendChallenge(response);
+        }
+        return loggedIn;
+    }
+
+
+
+    private void sendChallenge(ServletResponse response) throws IOException {
+        if (log.isDebugEnabled()) {
+            log.debug("Authentication required: sending 401 Authentication challenge response.");
+        }
+
+        HttpServletResponse httpResponse = WebUtils.toHttp(response);
+        httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        httpResponse.getWriter().write("unauthorized");
     }
 
     private String parseToken(ServletRequest request) {
@@ -69,20 +93,11 @@ class StatelessFilter extends AccessControlFilter {
         return "";
     }
 
-    @Override
-    protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-        sendChallenge(response);
-        return false;
+    private String getUsername(ServletRequest request) {
+        return WebUtils.getCleanParam(request, "username");
     }
 
-    private void sendChallenge(ServletResponse response) throws IOException {
-        if (logger.isDebugEnabled()) {
-            logger.debug("Authentication required: sending 401 Authentication challenge response.");
-        }
-
-        HttpServletResponse httpResponse = WebUtils.toHttp(response);
-        httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        httpResponse.getWriter().write("unauthorized");
+    private String getPassword(ServletRequest request) {
+        return WebUtils.getCleanParam(request, "password");
     }
-
 }

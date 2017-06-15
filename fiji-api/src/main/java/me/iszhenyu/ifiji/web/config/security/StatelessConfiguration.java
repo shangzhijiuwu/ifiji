@@ -1,10 +1,23 @@
 package me.iszhenyu.ifiji.web.config.security;
 
+import me.iszhenyu.ifiji.security.CacheName;
+import me.iszhenyu.ifiji.security.FijiRealm;
+import me.iszhenyu.ifiji.security.RetryLimitHashedCredentialsMatcher;
+import org.apache.shiro.cache.CacheManager;
+import org.apache.shiro.mgt.DefaultSecurityManager;
+import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
+import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.session.mgt.DefaultSessionManager;
+import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.mgt.DefaultWebSubjectFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.sql.DataSource;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -16,8 +29,8 @@ import java.util.Map;
 public class StatelessConfiguration {
 
     @Bean
-    public JwtFilter jwtFilter() {
-        JwtFilter filter = new JwtFilter();
+    public StatelessFilter jwtFilter() {
+        StatelessFilter filter = new StatelessFilter();
         filter.setLoginUrl("/auth/login");
         return filter;
     }
@@ -25,6 +38,51 @@ public class StatelessConfiguration {
     @Bean
     public StatelessCSRFFilter csrfFilter() {
         return new StatelessCSRFFilter();
+    }
+
+    @Bean
+    public JwtRealm jwtRealm() {
+        return new JwtRealm();
+    }
+
+    @Bean
+    public FijiRealm fijiRealm(DataSource dataSource, RetryLimitHashedCredentialsMatcher credentialsMatcher) {
+        FijiRealm realm = new FijiRealm();
+        realm.setDataSource(dataSource);
+        realm.setCredentialsMatcher(credentialsMatcher);
+        realm.setCachingEnabled(true);
+        realm.setAuthenticationCachingEnabled(true);
+        realm.setAuthenticationCacheName(CacheName.AUTHENTICATION_CACHE);
+        realm.setAuthorizationCachingEnabled(true);
+        realm.setAuthorizationCacheName(CacheName.AUTHORIZATION_CACHE);
+        return realm;
+    }
+
+    @Bean
+    public DefaultWebSubjectFactory subjectFactory() {
+        return new StatelessSubjectFactory();
+    }
+
+    @Bean
+    public DefaultSessionManager sessionManager() {
+        DefaultSessionManager sessionManager = new DefaultSessionManager();
+        sessionManager.setSessionValidationSchedulerEnabled(false);
+        return sessionManager;
+    }
+
+    @Bean
+    public DefaultSecurityManager securityManager(FijiRealm fijiRealm, JwtRealm jwtRealm, CacheManager cacheManager, SessionManager sessionManager) {
+        DefaultSecurityManager sm = new DefaultWebSecurityManager();
+        sm.setSubjectFactory(subjectFactory());
+        sm.setRealms(Arrays.asList(fijiRealm, jwtRealm));
+        sm.setCacheManager(cacheManager);
+        sm.setSessionManager(sessionManager);
+		/*
+         * 禁用使用Sessions 作为存储策略的实现，但它没有完全地禁用Sessions
+         * 所以需要配合context.setSessionCreationEnabled(false);
+         */
+        ((DefaultSessionStorageEvaluator) ((DefaultSubjectDAO) sm.getSubjectDAO()).getSessionStorageEvaluator()).setSessionStorageEnabled(false);
+        return sm;
     }
 
     @Bean

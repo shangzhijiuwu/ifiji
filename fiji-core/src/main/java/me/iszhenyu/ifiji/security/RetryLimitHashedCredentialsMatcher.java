@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Created by xiaoz on 2017/3/13.
  */
-class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher {
+public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher {
 
 	private Cache<String, AtomicInteger> passwordRetryCache;
 	private int retryTimes = 5;

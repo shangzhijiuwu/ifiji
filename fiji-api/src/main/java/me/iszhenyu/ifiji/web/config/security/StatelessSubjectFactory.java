@@ -1,4 +1,4 @@
-package me.iszhenyu.ifiji.security;
+package me.iszhenyu.ifiji.web.config.security;
 
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.subject.SubjectContext;
