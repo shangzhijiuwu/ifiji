@@ -14,6 +14,7 @@ import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.mgt.DefaultWebSubjectFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -42,17 +43,19 @@ public class StatelessConfiguration {
     }
 
     @Bean
-    public JwtRealm jwtRealm(SimpleCredentialsMatcher credentialsMatcher) {
+    @Qualifier("simpleCredentialsMatcher")
+    public JwtRealm jwtRealm(SimpleCredentialsMatcher simpleCredentialsMatcher) {
         JwtRealm realm = new JwtRealm();
-        realm.setCredentialsMatcher(credentialsMatcher);
+        realm.setCredentialsMatcher(simpleCredentialsMatcher);
         return realm;
     }
 
     @Bean
-    public FijiRealm fijiRealm(DataSource dataSource, RetryLimitHashedCredentialsMatcher credentialsMatcher) {
+    @Qualifier("retryLimitHashedCredentialsMatcher")
+    public FijiRealm fijiRealm(DataSource dataSource, RetryLimitHashedCredentialsMatcher retryLimitHashedCredentialsMatcher) {
         FijiRealm realm = new FijiRealm();
         realm.setDataSource(dataSource);
-        realm.setCredentialsMatcher(credentialsMatcher);
+        realm.setCredentialsMatcher(retryLimitHashedCredentialsMatcher);
         realm.setCachingEnabled(true);
         realm.setAuthenticationCachingEnabled(true);
         realm.setAuthenticationCacheName(CacheName.AUTHENTICATION_CACHE);
@@ -74,7 +77,7 @@ public class StatelessConfiguration {
     }
 
     @Bean
-    public DefaultSecurityManager securityManager(FijiRealm fijiRealm, JwtRealm jwtRealm, CacheManager cacheManager, SessionManager sessionManager) {
+    public SecurityManager securityManager(FijiRealm fijiRealm, JwtRealm jwtRealm, CacheManager cacheManager, SessionManager sessionManager) {
         DefaultSecurityManager sm = new DefaultWebSecurityManager();
         sm.setSubjectFactory(subjectFactory());
         sm.setRealms(Arrays.asList(fijiRealm, jwtRealm));
