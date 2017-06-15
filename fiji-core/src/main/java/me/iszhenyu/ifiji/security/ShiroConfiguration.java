@@ -1,5 +1,6 @@
 package me.iszhenyu.ifiji.security;
 
+import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
@@ -44,6 +45,11 @@ public class ShiroConfiguration {
 		credentialsMatcher.setHashIterations(2);
 		credentialsMatcher.setStoredCredentialsHexEncoded(true);
 		return credentialsMatcher;
+	}
+
+	@Bean
+	public SimpleCredentialsMatcher simpleCredentialsMatcher() {
+		return new SimpleCredentialsMatcher();
 	}
 
 	/**

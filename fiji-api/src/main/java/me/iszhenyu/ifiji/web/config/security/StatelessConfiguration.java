@@ -3,6 +3,7 @@ package me.iszhenyu.ifiji.web.config.security;
 import me.iszhenyu.ifiji.security.CacheName;
 import me.iszhenyu.ifiji.security.FijiRealm;
 import me.iszhenyu.ifiji.security.RetryLimitHashedCredentialsMatcher;
+import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
@@ -41,8 +42,10 @@ public class StatelessConfiguration {
     }
 
     @Bean
-    public JwtRealm jwtRealm() {
-        return new JwtRealm();
+    public JwtRealm jwtRealm(SimpleCredentialsMatcher credentialsMatcher) {
+        JwtRealm realm = new JwtRealm();
+        realm.setCredentialsMatcher(credentialsMatcher);
+        return realm;
     }
 
     @Bean
