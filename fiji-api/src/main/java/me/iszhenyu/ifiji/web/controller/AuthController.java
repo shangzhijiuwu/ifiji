@@ -1,10 +1,10 @@
 package me.iszhenyu.ifiji.web.controller;
 
 import me.iszhenyu.ifiji.exception.ValidationException;
-import me.iszhenyu.ifiji.model.UserDO;
 import me.iszhenyu.ifiji.service.UserService;
 import me.iszhenyu.ifiji.web.form.LoginForm;
 import me.iszhenyu.ifiji.web.form.RegisterForm;
+import me.iszhenyu.ifiji.web.vo.LoginVO;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -33,7 +33,7 @@ public class AuthController extends BaseController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public UserDO login(@Validated LoginForm form, BindingResult bindingResult) {
+	public LoginVO login(@Validated LoginForm form, BindingResult bindingResult) {
 		this.validateForm(bindingResult);
 		Subject subject = SecurityUtils.getSubject();
 		UsernamePasswordToken token = new UsernamePasswordToken(

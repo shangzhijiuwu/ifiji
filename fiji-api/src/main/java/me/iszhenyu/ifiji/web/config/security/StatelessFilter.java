@@ -3,7 +3,11 @@ package me.iszhenyu.ifiji.web.config.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import me.iszhenyu.ifiji.util.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.web.filter.AccessControlFilter;
+import org.apache.shiro.web.util.WebUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.ServletRequest;
@@ -21,6 +25,8 @@ import java.util.Date;
  */
 class StatelessFilter extends AccessControlFilter {
 
+    private Logger logger = LoggerFactory.getLogger(StatelessFilter.class);
+
     @Autowired
     private JwtProperties jwtProperties;
 
@@ -35,7 +41,8 @@ class StatelessFilter extends AccessControlFilter {
             return false;
         }
         Claims claims = Jwts.parser().setSigningKey(jwtProperties.getKey()).parseClaimsJws(jwtToken).getBody();
-        return !isTokenExpired(claims.getExpiration());
+        String principal = (String) SecurityUtils.getSubject().getPrincipal();
+        return !isTokenExpired(claims.getExpiration()) && claims.getSubject().equals(principal);
     }
 
     private boolean isTokenExpired(Date expiredAt) {
@@ -47,14 +54,14 @@ class StatelessFilter extends AccessControlFilter {
         if (!(request instanceof HttpServletRequest)) {
             return "";
         }
-        String token = ((HttpServletRequest) request).getHeader(jwtProperties.getTokenName());
+        String token = ((HttpServletRequest) request).getHeader(jwtProperties.getTokenHeaderName());
         if (StringUtils.isNotEmpty(token)) {
             return token;
         }
         Cookie[] cookies = ((HttpServletRequest) request).getCookies();
         if (cookies != null) {
             for (Cookie cookie: cookies) {
-                if (cookie.getName().equals(jwtProperties.getTokenName())) {
+                if (cookie.getName().equals(jwtProperties.getTokenCookieName())) {
                     return cookie.getValue();
                 }
             }
@@ -64,12 +71,16 @@ class StatelessFilter extends AccessControlFilter {
 
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-        onFail(response);
+        sendChallenge(response);
         return false;
     }
 
-    private void onFail(ServletResponse response) throws IOException {
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
+    private void sendChallenge(ServletResponse response) throws IOException {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Authentication required: sending 401 Authentication challenge response.");
+        }
+
+        HttpServletResponse httpResponse = WebUtils.toHttp(response);
         httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         httpResponse.getWriter().write("unauthorized");
     }

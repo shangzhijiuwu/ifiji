@@ -13,4 +13,6 @@ logging:
     root: INFO
 jwt:
   key: mykey
-  token-name: jwt-token
+  token-header-name: X-AUTH-TOKEN
+  token-cookie-name: AUTH-TOKEN
+  token-expire-day: 30

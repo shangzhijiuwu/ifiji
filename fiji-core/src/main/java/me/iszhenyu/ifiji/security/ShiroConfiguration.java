@@ -1,10 +1,7 @@
 package me.iszhenyu.ifiji.security;
 
-import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
-import org.apache.shiro.crypto.CipherService;
-import org.apache.shiro.io.Serializer;
 import org.apache.shiro.mgt.*;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
@@ -12,14 +9,9 @@ import org.apache.shiro.session.mgt.DefaultSessionManager;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
-import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.mgt.DefaultWebSubjectFactory;
-import org.apache.shiro.web.servlet.Cookie;
-import org.apache.shiro.web.servlet.SimpleCookie;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -30,12 +22,6 @@ import javax.sql.DataSource;
  */
 @Configuration
 public class ShiroConfiguration {
-
-	@Autowired(required = false)
-	private CipherService cipherService;
-
-	@Autowired(required = false)
-	private Serializer<PrincipalCollection> serializer;
 
 	/**
 	 * Shiro生命周期处理器
@@ -72,7 +58,7 @@ public class ShiroConfiguration {
 	}
 
 	@Bean
-	public CredentialsMatcher credentialsMatcher(CacheManager cacheManager) {
+	public RetryLimitHashedCredentialsMatcher retryLimitHashedCredentialsMatcher(CacheManager cacheManager) {
 		RetryLimitHashedCredentialsMatcher credentialsMatcher = new RetryLimitHashedCredentialsMatcher(cacheManager);
 		credentialsMatcher.setHashAlgorithmName("MD5");
 		credentialsMatcher.setHashIterations(2);
@@ -81,7 +67,7 @@ public class ShiroConfiguration {
 	}
 
 	@Bean
-	public Realm fijiRealm(DataSource dataSource, CredentialsMatcher credentialsMatcher) {
+	public Realm fijiRealm(DataSource dataSource, RetryLimitHashedCredentialsMatcher credentialsMatcher) {
 		FijiRealm realm = new FijiRealm();
 		realm.setDataSource(dataSource);
 		realm.setCredentialsMatcher(credentialsMatcher);
@@ -94,34 +80,12 @@ public class ShiroConfiguration {
 	}
 
 	@Bean
-	public Cookie rememberMeCookie() {
-		SimpleCookie rememberMeCookie = new SimpleCookie();
-		rememberMeCookie.setName("rememberMe");
-		rememberMeCookie.setMaxAge(2592000); // 30天
-		rememberMeCookie.setVersion(1);
-		rememberMeCookie.setHttpOnly(true);
-		rememberMeCookie.setSecure(false);
-		return rememberMeCookie;
-	}
-
-	@Bean
-	public RememberMeManager rememberMeManager(Cookie cookie) {
-		CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
-		cookieRememberMeManager.setCookie(cookie);
-		cookieRememberMeManager.setCipherService(cipherService);
-		cookieRememberMeManager.setSerializer(serializer);
-		return cookieRememberMeManager;
-	}
-
-	@Bean
-	public DefaultSecurityManager securityManager(Realm realm, RememberMeManager rememberMeManager,
-                                                  CacheManager cacheManager, SessionManager sessionManager) {
+	public DefaultSecurityManager securityManager(Realm realm, CacheManager cacheManager, SessionManager sessionManager) {
 		DefaultSecurityManager sm = new DefaultWebSecurityManager();
 		sm.setSubjectFactory(subjectFactory());
 		sm.setRealm(realm);
 		sm.setCacheManager(cacheManager);
 		sm.setSessionManager(sessionManager);
-		sm.setRememberMeManager(rememberMeManager);
 		/*
          * 禁用使用Sessions 作为存储策略的实现，但它没有完全地禁用Sessions
          * 所以需要配合context.setSessionCreationEnabled(false);
@@ -129,8 +93,6 @@ public class ShiroConfiguration {
 		((DefaultSessionStorageEvaluator) ((DefaultSubjectDAO) sm.getSubjectDAO()).getSessionStorageEvaluator()).setSessionStorageEnabled(false);
 		return sm;
 	}
-
-
 
 	/**
 	 *  开启shiro aop注解支持.

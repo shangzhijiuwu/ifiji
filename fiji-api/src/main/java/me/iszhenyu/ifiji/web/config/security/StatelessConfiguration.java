@@ -13,7 +13,7 @@ import java.util.Map;
  * @since 2017/6/7
  */
 @Configuration
-public class ShiroConfiguration {
+public class StatelessConfiguration {
 
     @Bean
     public StatelessFilter statelessAuthcFilter(){

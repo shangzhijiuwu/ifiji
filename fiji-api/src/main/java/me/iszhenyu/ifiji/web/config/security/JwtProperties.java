@@ -14,5 +14,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties("jwt")
 public class JwtProperties {
 	private String key;
-	private String tokenName;
+	private String tokenHeaderName;
+	private String tokenCookieName;
+	private long tokenExpireDay;
 }
