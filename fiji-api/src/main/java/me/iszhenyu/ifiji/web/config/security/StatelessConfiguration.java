@@ -16,17 +16,23 @@ import java.util.Map;
 public class StatelessConfiguration {
 
     @Bean
-    public StatelessFilter statelessAuthcFilter(){
-        StatelessFilter filter = new StatelessFilter();
+    public JwtFilter jwtFilter() {
+        JwtFilter filter = new JwtFilter();
         filter.setLoginUrl("/auth/login");
         return filter;
+    }
+
+    @Bean
+    public StatelessCSRFFilter csrfFilter() {
+        return new StatelessCSRFFilter();
     }
 
     @Bean
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         StatelessFilterFactoryBean factoryBean = new StatelessFilterFactoryBean(securityManager);
         factoryBean.setSecurityManager(securityManager);
-        factoryBean.getFilters().put("statelessAuthc", statelessAuthcFilter());
+        factoryBean.getFilters().put("jwtAuthc", jwtFilter());
+        factoryBean.getFilters().put("csrf", csrfFilter());
 
         //拦截器.
         Map<String,String> filterChainDefinitionMap = new LinkedHashMap<>();
@@ -35,7 +41,7 @@ public class StatelessConfiguration {
         filterChainDefinitionMap.put("/error/**", "anon");
         filterChainDefinitionMap.put("/auth/login", "anon");
         filterChainDefinitionMap.put("/auth/logout", "logout");
-        filterChainDefinitionMap.put("/**", "statelessAuthc");
+        filterChainDefinitionMap.put("/**", "jwtAuthc");
         factoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
         return factoryBean;

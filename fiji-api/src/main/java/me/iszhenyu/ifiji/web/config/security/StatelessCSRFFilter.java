@@ -1,10 +1,12 @@
 package me.iszhenyu.ifiji.web.config.security;
 
+import org.apache.shiro.web.servlet.AdviceFilter;
+
 /**
  * @author zhen.yu
  * @since 2017/6/15
  */
-public class StatelessCSRFFilter {
+public class StatelessCSRFFilter extends AdviceFilter {
 
     private static final String CSRF_TOKEN = "CSRF-TOKEN";
     private static final String X_CSRF_TOKEN = "X-CSRF-TOKEN";
