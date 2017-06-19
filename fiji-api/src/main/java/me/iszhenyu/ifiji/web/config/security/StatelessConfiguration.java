@@ -47,6 +47,7 @@ public class StatelessConfiguration {
     public JwtRealm jwtRealm(SimpleCredentialsMatcher simpleCredentialsMatcher) {
         JwtRealm realm = new JwtRealm();
         realm.setCredentialsMatcher(simpleCredentialsMatcher);
+        realm.setCachingEnabled(false);
         return realm;
     }
 
