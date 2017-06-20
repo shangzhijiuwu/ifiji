@@ -16,5 +16,5 @@ public class JwtProperties {
 	private String key;
 	private String tokenHeaderName;
 	private String tokenCookieName;
-	private long tokenExpireDay;
+	private int tokenExpireDay;
 }
