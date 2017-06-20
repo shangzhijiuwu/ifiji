@@ -51,7 +51,7 @@ public class AuthController extends BaseController {
 		} catch (AuthenticationException e) {
 			throw new ValidationException("用户名或密码错误");
 		}
-		UserDO user =  userService.getUser();
+		UserDO user =  userService.getUser(form.getUsername());
 		String jwtTokenStr = tokenService.generateJwtToken(user, jwtProperties.getKey(), jwtProperties.getTokenExpireDay());
 		return new LoginVO(jwtTokenStr, user);
 	}

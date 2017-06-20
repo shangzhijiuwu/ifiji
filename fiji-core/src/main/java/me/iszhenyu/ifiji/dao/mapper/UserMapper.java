@@ -11,5 +11,7 @@ public interface UserMapper extends BaseMapper<UserDO> {
 
 	UserDO getByMobileNumber(String mobile);
 
+	UserDO getByUsername(String username);
+
 	void updateMobileNumber(UserDO user);
 }

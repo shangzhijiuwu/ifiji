@@ -16,11 +16,12 @@ public class UserService {
 	@Autowired
 	private UserDao userDao;
 
-	public UserDO getUser() {
-		UserDO user = userDao.getByMobile("15122223333");
-//		user.setMobileNumber("15122223333");
-//		userDao.updateMobileNumber(user);
-		return user;
+	public UserDO getUser(String username) {
+		return userDao.getByUsername(username);
+	}
+
+	public UserDO getUserByMobile(String mobileNumber) {
+		return userDao.getByMobile(mobileNumber);
 	}
 
 	public UserDO createUser() {

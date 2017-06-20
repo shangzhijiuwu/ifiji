@@ -15,8 +15,10 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.mgt.DefaultWebSubjectFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.filter.DelegatingFilterProxy;
 
 import javax.sql.DataSource;
 import java.util.Arrays;
@@ -93,9 +95,18 @@ public class StatelessConfiguration {
     }
 
     @Bean
+    public FilterRegistrationBean delegatingFilterProxy(){
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+        DelegatingFilterProxy proxy = new DelegatingFilterProxy();
+        proxy.setTargetFilterLifecycle(true);
+        proxy.setTargetBeanName("shiroFilter");
+        filterRegistrationBean.setFilter(proxy);
+        return filterRegistrationBean;
+    }
+
+    @Bean
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         StatelessFilterFactoryBean factoryBean = new StatelessFilterFactoryBean(securityManager);
-        factoryBean.setSecurityManager(securityManager);
         factoryBean.getFilters().put("jwtAuthc", jwtFilter());
         factoryBean.getFilters().put("csrf", csrfFilter());
 

@@ -17,6 +17,11 @@
         WHERE mobile_number = #{mobile}
     </select>
 
+    <select id="getByUsername" resultMap="User">
+        SELECT * FROM sys_user
+        WHERE username = #{username}
+    </select>
+
     <insert id="insert" parameterType="UserDO" useGeneratedKeys="true" keyProperty="id">
       INSERT INTO sys_user
         (username, password_hash, password_salt, mobile_number, email, avatar_url, status, is_deleted, gmt_create, gmt_modified)
