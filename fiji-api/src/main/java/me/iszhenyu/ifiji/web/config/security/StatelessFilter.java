@@ -19,7 +19,7 @@ import java.io.IOException;
  * @author zhen.yu
  * @since 2017/6/15
  */
-public class StatelessFilter extends AuthenticatingFilter {
+class StatelessFilter extends AuthenticatingFilter {
 
     private static final Logger log = LoggerFactory.getLogger(StatelessFilter.class);
 
@@ -41,28 +41,19 @@ public class StatelessFilter extends AuthenticatingFilter {
 
     @Override
     protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) throws Exception {
-        if (isLoginRequest(request, response)) {
-            String username = getUsername(request);
-            String password = getPassword(request);
-            return createToken(username, password, request, response);
-        }
         String token = parseToken(request);
         return new JwtAuthenticationToken(token);
     }
 
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-        boolean loggedIn = false;
         if (isLoginRequest(request, response))  {
-            loggedIn = executeLogin(request, response);
+            // 允许执行login
+            return true;
         }
-        if (!loggedIn) {
-            sendChallenge(response);
-        }
-        return loggedIn;
+        sendChallenge(response);
+        return false;
     }
-
-
 
     private void sendChallenge(ServletResponse response) throws IOException {
         if (log.isDebugEnabled()) {
@@ -93,11 +84,4 @@ public class StatelessFilter extends AuthenticatingFilter {
         return "";
     }
 
-    private String getUsername(ServletRequest request) {
-        return WebUtils.getCleanParam(request, "username");
-    }
-
-    private String getPassword(ServletRequest request) {
-        return WebUtils.getCleanParam(request, "password");
-    }
 }

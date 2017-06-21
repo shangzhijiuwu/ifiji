@@ -47,6 +47,7 @@ public class AuthController extends BaseController {
 				form.getUsername(), form.getPassword()
 		);
 		try {
+			// 根据token类型, 这里实际是FijiRealm执行的登录
 			subject.login(token);
 		} catch (AuthenticationException e) {
 			throw new ValidationException("用户名或密码错误");
