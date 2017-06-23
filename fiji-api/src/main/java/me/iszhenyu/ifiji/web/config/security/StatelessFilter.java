@@ -68,6 +68,9 @@ class StatelessFilter extends AuthenticatingFilter {
 
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
+        if (isLoginRequest(request, response)) {
+            return true;
+        }
         boolean authc = this.executeJwtAuthentication(request, response);
         if (!authc) {
             sendChallenge(response);

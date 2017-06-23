@@ -19,7 +19,7 @@ public class UserController extends BaseController {
 
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public UserDO test() {
-		return userService.getUser("15110223233");
+		return userService.getUser("iszhenyu");
 	}
 
 }

@@ -1,7 +1,9 @@
 package me.iszhenyu.ifiji.web.config.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import me.iszhenyu.ifiji.service.TokenService;
 import me.iszhenyu.ifiji.util.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -24,6 +26,8 @@ class JwtRealm extends AuthorizingRealm {
 
     @Autowired
     private JwtProperties jwtProperties;
+    @Autowired
+    private TokenService tokenService;
 
     @Override
     public boolean supports(AuthenticationToken token) {
@@ -40,27 +44,12 @@ class JwtRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) token;
         String jwtTokenString = (String) jwtAuthenticationToken.getCredentials();
-        if (StringUtils.isEmpty(jwtTokenString)) {
-            throw new AuthenticationException("jwt is empty!");
-        }
-
-        Claims claims;
-        try {
-            claims = Jwts.parser().setSigningKey(jwtProperties.getKey()).parseClaimsJws(jwtTokenString).getBody();
-        } catch (Exception e) {
-            throw new AuthenticationException("jwt parse error!");
-        }
-        String principal = (String) SecurityUtils.getSubject().getPrincipal();
-        if (isTokenExpired(claims.getExpiration()) || claims.getSubject().equals(principal)) {
+        String principal = tokenService.parseJwtToken(jwtProperties.getKey(), jwtTokenString);
+        if (StringUtils.isEmpty(principal)) {
             throw new AuthenticationException("jwt expired or info error!");
         }
 
         return new SimpleAuthenticationInfo(principal, jwtTokenString, getName());
-    }
-
-    private boolean isTokenExpired(Date expiredAt) {
-        Date now = Calendar.getInstance().getTime();
-        return expiredAt.before(now);
     }
 
 }
