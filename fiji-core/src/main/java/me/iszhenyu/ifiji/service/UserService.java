@@ -3,6 +3,7 @@ package me.iszhenyu.ifiji.service;
 import me.iszhenyu.ifiji.constant.UserStatus;
 import me.iszhenyu.ifiji.dao.UserDao;
 import me.iszhenyu.ifiji.model.UserDO;
+import me.iszhenyu.ifiji.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,11 @@ public class UserService {
 	private UserDao userDao;
 
 	public UserDO getUser(String username) {
+		if (StringUtils.isMobile(username)) {
+			return userDao.getByMobile(username);
+		} else if (StringUtils.isEmail(username)) {
+			return userDao.getByEmail(username);
+		}
 		return userDao.getByUsername(username);
 	}
 

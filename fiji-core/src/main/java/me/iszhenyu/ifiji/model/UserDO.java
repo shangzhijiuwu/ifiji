@@ -1,5 +1,6 @@
 package me.iszhenyu.ifiji.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +16,9 @@ import me.iszhenyu.ifiji.constant.UserStatus;
 @NoArgsConstructor
 public class UserDO extends BaseDO {
 	private String username;
+	@JsonIgnore
 	private String passwordHash;
+	@JsonIgnore
 	private String passwordSalt;
 	private String mobileNumber;
 	private String email;
