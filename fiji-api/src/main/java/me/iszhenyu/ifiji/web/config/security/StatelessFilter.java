@@ -1,7 +1,9 @@
 package me.iszhenyu.ifiji.web.config.security;
 
 import me.iszhenyu.ifiji.util.StringUtils;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
 import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
@@ -40,19 +42,39 @@ class StatelessFilter extends AuthenticatingFilter {
     }
 
     @Override
-    protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) throws Exception {
+    protected JwtAuthenticationToken createToken(ServletRequest request, ServletResponse response) throws Exception {
         String token = parseToken(request);
         return new JwtAuthenticationToken(token);
     }
 
     @Override
+    protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
+        return isLoginRequest(request, response) || (!isLoginRequest(request, response) && isPermissive(mappedValue));
+    }
+
+    @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-        if (isLoginRequest(request, response))  {
-            // 允许执行login
-            return true;
+        boolean authc = this.executeJwtAuthentication(request, response);
+        if (!authc) {
+            sendChallenge(response);
         }
-        sendChallenge(response);
-        return false;
+        return authc;
+    }
+
+    private boolean executeJwtAuthentication(ServletRequest request, ServletResponse response) throws Exception {
+        AuthenticationToken token = createToken(request, response);
+        if (token == null) {
+            String msg = "createToken method implementation returned null. A valid non-null AuthenticationToken " +
+                    "must be created in order to execute a login attempt.";
+            throw new IllegalStateException(msg);
+        }
+        try {
+            Subject subject = getSubject(request, response);
+            subject.login(token);
+            return true;
+        } catch (AuthenticationException e) {
+            return false;
+        }
     }
 
     private void sendChallenge(ServletResponse response) throws IOException {
