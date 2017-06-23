@@ -47,9 +47,23 @@ class StatelessFilter extends AuthenticatingFilter {
         return new JwtAuthenticationToken(token);
     }
 
-    @Override
-    protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
-        return isLoginRequest(request, response) || (!isLoginRequest(request, response) && isPermissive(mappedValue));
+    private String parseToken(ServletRequest request) {
+        if (!(request instanceof HttpServletRequest)) {
+            return "";
+        }
+        String token = ((HttpServletRequest) request).getHeader(jwtProperties.getTokenHeaderName());
+        if (StringUtils.isNotEmpty(token)) {
+            return token;
+        }
+        Cookie[] cookies = ((HttpServletRequest) request).getCookies();
+        if (cookies != null) {
+            for (Cookie cookie: cookies) {
+                if (cookie.getName().equals(jwtProperties.getTokenCookieName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return "";
     }
 
     @Override
@@ -85,25 +99,6 @@ class StatelessFilter extends AuthenticatingFilter {
         HttpServletResponse httpResponse = WebUtils.toHttp(response);
         httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         httpResponse.getWriter().write("unauthorized");
-    }
-
-    private String parseToken(ServletRequest request) {
-        if (!(request instanceof HttpServletRequest)) {
-            return "";
-        }
-        String token = ((HttpServletRequest) request).getHeader(jwtProperties.getTokenHeaderName());
-        if (StringUtils.isNotEmpty(token)) {
-            return token;
-        }
-        Cookie[] cookies = ((HttpServletRequest) request).getCookies();
-        if (cookies != null) {
-            for (Cookie cookie: cookies) {
-                if (cookie.getName().equals(jwtProperties.getTokenCookieName())) {
-                    return cookie.getValue();
-                }
-            }
-        }
-        return "";
     }
 
 }
