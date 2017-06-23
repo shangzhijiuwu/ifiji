@@ -20,11 +20,7 @@ public class UserService {
 		return userDao.getByUsername(username);
 	}
 
-	public UserDO getUserByMobile(String mobileNumber) {
-		return userDao.getByMobile(mobileNumber);
-	}
-
-	public UserDO createUser() {
+	public UserDO createUser(String username, String password) {
 		UserDO user = new UserDO();
 		user.setUsername("this is a test3");
 		user.setPasswordHash("123");

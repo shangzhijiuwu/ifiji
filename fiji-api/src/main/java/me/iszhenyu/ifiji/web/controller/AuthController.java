@@ -36,6 +36,10 @@ public class AuthController extends BaseController {
 	@RequestMapping(value = "register", method = RequestMethod.POST)
 	public String register(@Validated RegisterForm form, BindingResult bindingResult) {
 		this.validateForm(bindingResult);
+		if (!form.getPassword().equals(form.getRePassword())) {
+			throw new ValidationException("两次密码不一致");
+		}
+		userService.createUser(form.getUsername(), form.getPassword());
 		return "注册成功";
 	}
 
