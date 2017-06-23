@@ -28,6 +28,10 @@ public class UserDao extends BaseDao<UserDO> {
 		return userMapper.getByUsername(username);
 	}
 
+	public UserDO getByEmail(String email) {
+		return userMapper.getByEmail(email);
+	}
+
 	public void updateMobileNumber(UserDO user) {
 		userMapper.updateMobileNumber(user);
 	}

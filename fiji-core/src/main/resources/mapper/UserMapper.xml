@@ -4,23 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="me.iszhenyu.ifiji.dao.mapper.UserMapper">
     
-    <resultMap id="User" type="UserDO">
-        <result property="deleted" column="is_deleted"/>
-    </resultMap>
-
-    <select id="get" resultMap="User">
-        SELECT * FROM sys_user WHERE id = #{id}
-    </select>
-
-    <select id="getByMobileNumber" resultMap="User">
-        SELECT * FROM sys_user
-        WHERE mobile_number = #{mobile}
-    </select>
-
-    <select id="getByUsername" resultMap="User">
-        SELECT * FROM sys_user
-        WHERE username = #{username}
-    </select>
+    <!--<resultMap id="User" type="UserDO">-->
+        <!--<result property="deleted" column="is_deleted"/>-->
+    <!--</resultMap>-->
 
     <insert id="insert" parameterType="UserDO" useGeneratedKeys="true" keyProperty="id">
       INSERT INTO sys_user
