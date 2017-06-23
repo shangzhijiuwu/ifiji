@@ -3,6 +3,7 @@ package me.iszhenyu.ifiji.dao.mapper;
 import me.iszhenyu.ifiji.model.UserDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.io.Serializable;
 
@@ -25,5 +26,6 @@ public interface UserMapper extends BaseMapper<UserDO> {
 	@Select("select * from sys_user where email=#{email}")
 	UserDO getByEmail(String email);
 
+	@Update("UPDATE sys_user SET mobile_number=#{mobileNumber}, gmt_modified=#{gmtModified} WHERE id=#{id}")
 	void updateMobileNumber(UserDO user);
 }

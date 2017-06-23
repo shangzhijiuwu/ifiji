@@ -15,11 +15,4 @@
         (#{username}, #{passwordHash}, #{passwordSalt}, #{mobileNumber}, #{email}, #{avatarUrl}, #{status}, #{deleted}, #{gmtCreate}, #{gmtModified})
     </insert>
 
-    <update id="updateMobileNumber" parameterType="UserDO">
-        UPDATE sys_user SET
-          mobile_number=#{mobileNumber},
-          gmt_modified=#{gmtModified}
-        WHERE id=#{id}
-    </update>
-
 </mapper>
