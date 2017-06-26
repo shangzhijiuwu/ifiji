@@ -3,8 +3,10 @@ package me.iszhenyu.ifiji.service;
 import me.iszhenyu.ifiji.constant.UserStatus;
 import me.iszhenyu.ifiji.dao.UserDao;
 import me.iszhenyu.ifiji.model.UserDO;
+import me.iszhenyu.ifiji.security.RetryLimitHashedCredentialsMatcher;
 import me.iszhenyu.ifiji.util.RandomUtils;
 import me.iszhenyu.ifiji.util.StringUtils;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,8 @@ public class UserService {
 
 	@Autowired
 	private UserDao userDao;
+	@Autowired
+	private RetryLimitHashedCredentialsMatcher credentialsMatcher;
 
 	public UserDO getUser(String username) {
 		if (StringUtils.isMobile(username)) {
@@ -28,10 +32,13 @@ public class UserService {
 	}
 
 	public UserDO createUser(String username, String password) {
+		String salt = RandomUtils.randomNumeric(4);
+		SimpleHash hash = new SimpleHash(credentialsMatcher.getHashAlgorithmName(), password, salt, credentialsMatcher.getHashIterations());
+
 		UserDO user = new UserDO();
-		user.setPasswordSalt(RandomUtils.randomNumeric(4));
 		user.setUsername(username);
-		user.setPasswordHash("123");
+		user.setPasswordHash(hash.toString());
+		user.setPasswordSalt(salt);
 		user.setStatus(UserStatus.ACTIVE);
 		user.setDeleted(false);
 		userDao.save(user);

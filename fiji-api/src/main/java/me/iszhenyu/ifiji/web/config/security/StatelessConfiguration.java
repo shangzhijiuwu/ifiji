@@ -116,6 +116,7 @@ public class StatelessConfiguration {
         filterChainDefinitionMap.put("/assets/**", "anon");
         filterChainDefinitionMap.put("/error/**", "anon");
         filterChainDefinitionMap.put("/auth/login", "anon");
+        filterChainDefinitionMap.put("/auth/register", "anon");
         filterChainDefinitionMap.put("/auth/logout", "logout");
         filterChainDefinitionMap.put("/**", "jwtAuthc");
         factoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);

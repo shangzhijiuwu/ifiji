@@ -28,11 +28,15 @@ public class TokenService {
             expireDays = 10;
         }
         long mis = System.currentTimeMillis() + 3600L * 24 * 1000 * expireDays;
-        return Jwts.builder()
+        String finalToken = Jwts.builder()
                 .setSubject(String.valueOf(user.getId()))
                 .setExpiration(new Date(mis))
                 .signWith(SignatureAlgorithm.HS512, tokenKey)
                 .compact();
+
+        logger.info("generate jwt token: {}", finalToken);
+
+        return finalToken;
     }
 
     public String parseJwtToken(String tokenKey, String tokenString) {
@@ -44,7 +48,6 @@ public class TokenService {
             claims = Jwts.parser().setSigningKey(tokenKey).parseClaimsJws(tokenString).getBody();
         } catch (JwtException e) {
             logger.info("jwt parse error, details: {}", e.getMessage());
-//            throw new AuthenticationException("jwt parse error!");
             return null;
         }
         return claims.getSubject();
