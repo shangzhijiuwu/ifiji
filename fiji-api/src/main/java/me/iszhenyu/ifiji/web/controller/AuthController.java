@@ -2,7 +2,7 @@ package me.iszhenyu.ifiji.web.controller;
 
 import me.iszhenyu.ifiji.exception.ValidationException;
 import me.iszhenyu.ifiji.model.UserDO;
-import me.iszhenyu.ifiji.service.TokenService;
+import me.iszhenyu.ifiji.service.SecurityService;
 import me.iszhenyu.ifiji.service.UserService;
 import me.iszhenyu.ifiji.web.config.security.JwtProperties;
 import me.iszhenyu.ifiji.web.form.LoginForm;
@@ -31,7 +31,7 @@ public class AuthController extends BaseController {
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private TokenService tokenService;
+	private SecurityService securityService;
 
 	@RequestMapping(value = "register", method = RequestMethod.POST)
 	public String register(@Validated RegisterForm form, BindingResult bindingResult) {
@@ -39,7 +39,7 @@ public class AuthController extends BaseController {
 		if (!form.getPassword().equals(form.getRePassword())) {
 			throw new ValidationException("两次密码不一致");
 		}
-		userService.createUser(form.getUsername(), form.getPassword());
+		userService.registerUser(form.getUsername(), form.getPassword());
 		return "注册成功";
 	}
 
@@ -57,7 +57,7 @@ public class AuthController extends BaseController {
 			throw new ValidationException("用户名或密码错误");
 		}
 		UserDO user =  userService.getUser(form.getUsername());
-		String jwtTokenStr = tokenService.generateJwtToken(user, jwtProperties.getKey(), jwtProperties.getTokenExpireDay());
+		String jwtTokenStr = securityService.generateJwtToken(user, jwtProperties.getKey(), jwtProperties.getTokenExpireDay());
 		return new LoginVO(jwtTokenStr, user);
 	}
 

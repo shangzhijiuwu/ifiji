@@ -5,13 +5,15 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import me.iszhenyu.ifiji.model.UserDO;
+import me.iszhenyu.ifiji.security.RetryLimitHashedCredentialsMatcher;
+import me.iszhenyu.ifiji.util.RandomUtils;
 import me.iszhenyu.ifiji.util.StringUtils;
-import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -19,9 +21,12 @@ import java.util.Date;
  * @since 2017/6/20
  */
 @Service
-public class TokenService {
+public class SecurityService {
 
-    private Logger logger = LoggerFactory.getLogger(TokenService.class);
+    private Logger logger = LoggerFactory.getLogger(SecurityService.class);
+
+    @Autowired
+    private RetryLimitHashedCredentialsMatcher credentialsMatcher;
 
     public String generateJwtToken(UserDO user, String tokenKey, int expireDays) {
         if (expireDays <= 0) {
@@ -53,5 +58,8 @@ public class TokenService {
         return claims.getSubject();
     }
 
-
+    public String encodePasswordWithSalt(String password, String salt) {
+        SimpleHash hash = new SimpleHash(credentialsMatcher.getHashAlgorithmName(), password, salt, credentialsMatcher.getHashIterations());
+        return hash.toHex();
+    }
 }

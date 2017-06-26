@@ -26,12 +26,12 @@ public abstract class BaseDao<T extends BaseDO> {
 		return getMapper().listByIds(ids);
 	}
 
-	public void save(T model) {
-		getMapper().save(model);
+	public void insert(T model) {
+		getMapper().insert(model);
 	}
 
-	public void batchSave(Collection<T> models) {
-		getMapper().batchSave(models);
+	public void batchInsert(Collection<T> models) {
+		getMapper().batchInsert(models);
 	}
 
 	//更新乐观锁

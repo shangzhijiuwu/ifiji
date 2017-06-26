@@ -15,9 +15,9 @@ public interface BaseMapper<T> {
 
 	List<T> listByIds(Collection<Serializable> ids);
 
-	void save(T model);
+	void insert(T model);
 
-	void batchSave(Collection<T> models);
+	void batchInsert(Collection<T> models);
 
 	int update(T model);
 

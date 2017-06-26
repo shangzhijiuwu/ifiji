@@ -32,17 +32,16 @@ import java.util.Map;
 @Configuration
 public class StatelessConfiguration {
 
-    @Bean
-    public StatelessFilter jwtFilter() {
-        StatelessFilter filter = new StatelessFilter();
-        filter.setLoginUrl("/auth/login");
-        return filter;
-    }
+//    // 不能定义成bean, 否则会添加到ApplicationFilterChain中, 这样所有的请求都会走一遍这个filter
+//    @Bean
+//    public StatelessFilter jwtFilter() {
+//        return new StatelessFilter();
+//    }
 
-    @Bean
-    public StatelessCSRFFilter csrfFilter() {
-        return new StatelessCSRFFilter();
-    }
+//    @Bean
+//    public StatelessCSRFFilter csrfFilter() {
+//        return new StatelessCSRFFilter();
+//    }
 
     @Bean
     @Qualifier("simpleCredentialsMatcher")
@@ -107,8 +106,8 @@ public class StatelessConfiguration {
     @Bean
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         StatelessFilterFactoryBean factoryBean = new StatelessFilterFactoryBean(securityManager);
-        factoryBean.getFilters().put("jwtAuthc", jwtFilter());
-        factoryBean.getFilters().put("csrf", csrfFilter());
+        factoryBean.getFilters().put("jwtAuthc", new StatelessFilter());
+        factoryBean.getFilters().put("csrf", new StatelessCSRFFilter());
 
         //拦截器.
         Map<String,String> filterChainDefinitionMap = new LinkedHashMap<>();
