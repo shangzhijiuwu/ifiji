@@ -11,23 +11,39 @@ public class ResponseVO {
     private Meta meta;
     private Object data;
 
-    public ResponseVO success() {
+    public static ResponseVO success() {
+        return new ResponseVO().fillSuccess();
+    }
+
+    public static ResponseVO success(Object data) {
+        return new ResponseVO().fillSuccess(data);
+    }
+
+    public static ResponseVO fail() {
+        return new ResponseVO().fillFailure();
+    }
+
+    public static ResponseVO fail(String message) {
+        return new ResponseVO().fillFailure(message);
+    }
+
+    public ResponseVO fillSuccess() {
         this.meta = new Meta(true, OK);
         return this;
     }
 
-    public ResponseVO success(Object data) {
+    public ResponseVO fillSuccess(Object data) {
         this.meta = new Meta(true, OK);
         this.data = data;
         return this;
     }
 
-    public ResponseVO failure() {
+    public ResponseVO fillFailure() {
         this.meta = new Meta(false, ERROR);
         return this;
     }
 
-    public ResponseVO failure(String message) {
+    public ResponseVO fillFailure(String message) {
         this.meta = new Meta(false, message);
         return this;
     }

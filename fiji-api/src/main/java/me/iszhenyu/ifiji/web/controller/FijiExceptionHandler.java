@@ -21,7 +21,7 @@ public class FijiExceptionHandler {
 
     @ExceptionHandler({FijiException.class})
     public ResponseEntity<ResponseVO> handleFijiException(FijiException e) {
-        ResponseVO vo = new ResponseVO().failure(e.getShowMessage());
+        ResponseVO vo = ResponseVO.fail(e.getShowMessage());
         return new ResponseEntity<>(vo, e.getStatus());
     }
 
@@ -32,7 +32,7 @@ public class FijiExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseVO handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
-        return new ResponseVO().failure("could_not_read_json");
+        return ResponseVO.fail("could_not_read_json");
     }
 
     /**
@@ -42,7 +42,7 @@ public class FijiExceptionHandler {
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseVO handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
-        return new ResponseVO().failure("request_method_not_supported");
+        return ResponseVO.fail("request_method_not_supported");
     }
 
     /**
@@ -52,7 +52,7 @@ public class FijiExceptionHandler {
     @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     public ResponseVO handleHttpMediaTypeNotSupportedException(Exception e) {
-        return new ResponseVO().failure("content_type_not_supported");
+        return ResponseVO.fail("content_type_not_supported");
     }
 
     /**
@@ -62,6 +62,6 @@ public class FijiExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({RuntimeException.class})
     public ResponseVO handleRuntimeException(RuntimeException e) {
-        return new ResponseVO().failure(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+        return ResponseVO.fail(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
     }
 }
