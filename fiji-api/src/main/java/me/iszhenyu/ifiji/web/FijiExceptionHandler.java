@@ -1,4 +1,4 @@
-package me.iszhenyu.ifiji.web.controller;
+package me.iszhenyu.ifiji.web;
 
 import me.iszhenyu.ifiji.exception.FijiException;
 import me.iszhenyu.ifiji.web.vo.ResponseVO;
@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.validation.ValidationException;
+
 /**
  * @author zhen.yu
  * @since 2017/6/9
@@ -23,6 +25,15 @@ public class FijiExceptionHandler {
     public ResponseEntity<ResponseVO> handleFijiException(FijiException e) {
         ResponseVO vo = ResponseVO.fail(e.getShowMessage());
         return new ResponseEntity<>(vo, e.getStatus());
+    }
+
+    /**
+     * 400 - Bad Request
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ValidationException.class)
+    public ResponseVO handleValidationException(ValidationException e) {
+        return ResponseVO.fail(e.getMessage());
     }
 
     /**
