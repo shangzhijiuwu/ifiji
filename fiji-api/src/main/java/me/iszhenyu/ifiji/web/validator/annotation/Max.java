@@ -11,6 +11,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
-public @interface NotEmpty {
+public @interface Max {
     String message() default "";
+    int value() default Integer.MAX_VALUE;
 }
