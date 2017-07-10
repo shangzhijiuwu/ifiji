@@ -13,7 +13,7 @@ import java.util.List;
  * @author zhen.yu
  * @since 2017/6/8
  */
-class BaseController {
+public class BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(BaseController.class);
 
