@@ -5,8 +5,8 @@ import me.iszhenyu.ifiji.model.UserDO;
 import me.iszhenyu.ifiji.service.SecurityService;
 import me.iszhenyu.ifiji.service.UserService;
 import me.iszhenyu.ifiji.web.config.security.JwtProperties;
-import me.iszhenyu.ifiji.web.form.LoginForm;
 import me.iszhenyu.ifiji.web.form.RegisterForm;
+import me.iszhenyu.ifiji.web.validator.annotation.NotEmpty;
 import me.iszhenyu.ifiji.web.vo.LoginVO;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -44,19 +44,17 @@ public class AuthController extends BaseController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public LoginVO login(@Validated LoginForm form, BindingResult bindingResult) {
-		this.validateForm(bindingResult);
+	public LoginVO login(@NotEmpty(message = "用户名不能为空") String username,
+						 @NotEmpty(message = "密码不能为空") String password) {
 		Subject subject = SecurityUtils.getSubject();
-		UsernamePasswordToken token = new UsernamePasswordToken(
-				form.getUsername(), form.getPassword()
-		);
+		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
 		try {
 			// 根据token类型, 这里实际是FijiRealm执行的登录
 			subject.login(token);
 		} catch (AuthenticationException e) {
 			throw new ValidationException("用户名或密码错误");
 		}
-		UserDO user =  userService.getUser(form.getUsername());
+		UserDO user =  userService.getUser(username);
 		String jwtTokenStr = securityService.generateJwtToken(user, jwtProperties.getKey(), jwtProperties.getTokenExpireDay());
 		return new LoginVO(jwtTokenStr, user);
 	}
