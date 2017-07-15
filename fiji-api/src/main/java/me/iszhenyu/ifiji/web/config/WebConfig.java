@@ -1,9 +1,9 @@
 package me.iszhenyu.ifiji.web.config;
 
 import me.iszhenyu.ifiji.web.validator.*;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.util.List;
@@ -14,10 +14,15 @@ import java.util.List;
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
 
-    @Bean
-    public CorsFilter corsFilter() {
-        return new CorsFilter();
-    }
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**")
+//                .allowedOrigins("http://domain2.com")
+//                .allowedMethods("GET", "PUT", "POST", "DELETE")
+//                .allowedHeaders("header1", "header2", "header3")
+//                .exposedHeaders("header1", "header2")
+//                .allowCredentials(false).maxAge(3600);
+//    }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {

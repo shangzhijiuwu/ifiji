@@ -10,11 +10,6 @@ spring:
     default-property-inclusion: non_null
   thymeleaf:
     cache: false
-logging:
-  level:
-    org.springframework.web: INFO
-    me.iszhenyu: DEBUG
-    root: INFO
 jwt:
   key: mykey
   token-header-name: X-AUTH-TOKEN
