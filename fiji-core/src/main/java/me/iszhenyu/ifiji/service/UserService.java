@@ -17,6 +17,7 @@ public class UserService {
 
 	@Autowired
 	private UserDao userDao;
+
 	@Autowired
 	private SecurityService securityService;
 
