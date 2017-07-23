@@ -1,8 +1,7 @@
 package me.iszhenyu.ifiji.web.controller;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.session.Session;
-import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,12 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class IndexController extends BaseController {
+    Logger logger = LoggerFactory.getLogger(IndexController.class);
 
     @RequestMapping("/hello3")
     public String hello3(){
-        Subject currentUser = SecurityUtils.getSubject();
-        Session session = currentUser.getSession();
-        System.out.println(session);
+        logger.info("just a test!");
         return"hello3,Andy";
     }
 }

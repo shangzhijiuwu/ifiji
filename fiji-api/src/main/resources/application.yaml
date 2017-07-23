@@ -10,8 +10,12 @@ spring:
     default-property-inclusion: non_null
   thymeleaf:
     cache: false
+  profiles:
+    active: dev
 jwt:
   key: mykey
   token-header-name: X-AUTH-TOKEN
   token-cookie-name: AUTH-TOKEN
   token-expire-day: 30
+logging:
+  config: classpath:logback/logback-spring.xml

@@ -14,6 +14,7 @@ import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.mgt.DefaultWebSubjectFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -42,6 +43,9 @@ public class StatelessConfiguration {
 //    public StatelessCSRFFilter csrfFilter() {
 //        return new StatelessCSRFFilter();
 //    }
+
+    @Autowired
+    private JwtProperties jwtProperties;
 
     @Bean
     @Qualifier("simpleCredentialsMatcher")
@@ -106,7 +110,7 @@ public class StatelessConfiguration {
     @Bean
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         StatelessFilterFactoryBean factoryBean = new StatelessFilterFactoryBean(securityManager);
-        factoryBean.getFilters().put("jwtAuthc", new StatelessFilter());
+        factoryBean.getFilters().put("jwtAuthc", new StatelessFilter(jwtProperties));
         factoryBean.getFilters().put("csrf", new StatelessCSRFFilter());
 
         //拦截器.

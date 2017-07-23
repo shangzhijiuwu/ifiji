@@ -22,11 +22,12 @@ import java.io.IOException;
  * @since 2017/6/15
  */
 class StatelessFilter extends AuthenticatingFilter {
-
     private static final Logger log = LoggerFactory.getLogger(StatelessFilter.class);
-
-    @Autowired
     private JwtProperties jwtProperties;
+
+    public StatelessFilter(JwtProperties jwtProperties) {
+        this.jwtProperties = jwtProperties;
+    }
 
     @Override
     public void setLoginUrl(String loginUrl) {
