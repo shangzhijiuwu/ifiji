@@ -1,7 +1,7 @@
 package me.iszhenyu.ifiji.web.config.security;
 
-import me.iszhenyu.ifiji.security.CacheName;
-import me.iszhenyu.ifiji.security.FijiRealm;
+import me.iszhenyu.ifiji.security.ShiroCacheName;
+import me.iszhenyu.ifiji.security.ShiroRealm;
 import me.iszhenyu.ifiji.security.RetryLimitHashedCredentialsMatcher;
 import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
 import org.apache.shiro.cache.CacheManager;
@@ -58,15 +58,15 @@ public class StatelessConfiguration {
 
     @Bean
     @Qualifier("retryLimitHashedCredentialsMatcher")
-    public FijiRealm fijiRealm(DataSource dataSource, RetryLimitHashedCredentialsMatcher retryLimitHashedCredentialsMatcher) {
-        FijiRealm realm = new FijiRealm();
+    public ShiroRealm shiroRealm(DataSource dataSource, RetryLimitHashedCredentialsMatcher retryLimitHashedCredentialsMatcher) {
+        ShiroRealm realm = new ShiroRealm();
         realm.setDataSource(dataSource);
         realm.setCredentialsMatcher(retryLimitHashedCredentialsMatcher);
         realm.setCachingEnabled(true);
         realm.setAuthenticationCachingEnabled(true);
-        realm.setAuthenticationCacheName(CacheName.AUTHENTICATION_CACHE);
+        realm.setAuthenticationCacheName(ShiroCacheName.AUTHENTICATION_CACHE);
         realm.setAuthorizationCachingEnabled(true);
-        realm.setAuthorizationCacheName(CacheName.AUTHORIZATION_CACHE);
+        realm.setAuthorizationCacheName(ShiroCacheName.AUTHORIZATION_CACHE);
         return realm;
     }
 
@@ -83,11 +83,11 @@ public class StatelessConfiguration {
     }
 
     @Bean
-    public SecurityManager securityManager(FijiRealm fijiRealm, JwtRealm jwtRealm, CacheManager cacheManager, SessionManager sessionManager) {
+    public SecurityManager securityManager(ShiroRealm shiroRealm, JwtRealm jwtRealm, CacheManager shiroCacheManager, SessionManager sessionManager) {
         DefaultSecurityManager sm = new DefaultWebSecurityManager();
         sm.setSubjectFactory(subjectFactory());
-        sm.setRealms(Arrays.asList(fijiRealm, jwtRealm));
-        sm.setCacheManager(cacheManager);
+        sm.setRealms(Arrays.asList(shiroRealm, jwtRealm));
+        sm.setCacheManager(shiroCacheManager);
         sm.setSessionManager(sessionManager);
 		/*
          * 禁用使用Sessions 作为存储策略的实现，但它没有完全地禁用Sessions

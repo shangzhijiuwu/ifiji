@@ -17,6 +17,9 @@ spring:
       max-idle: 8
       min-idle: 0
       max-active: 8
+  cache:
+    ehcache:
+      config: classpath:config/ehcache-fiji.xml
 mybatis:
   type-aliases-package: me.iszhenyu.ifiji.model
   type-handlers-package: me.iszhenyu.ifiji.dao.typehandler
