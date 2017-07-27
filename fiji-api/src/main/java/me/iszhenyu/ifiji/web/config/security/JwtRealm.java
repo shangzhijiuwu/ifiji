@@ -1,6 +1,6 @@
 package me.iszhenyu.ifiji.web.config.security;
 
-import me.iszhenyu.ifiji.service.SecurityService;
+import me.iszhenyu.ifiji.service.JwtService;
 import me.iszhenyu.ifiji.util.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -20,7 +20,7 @@ class JwtRealm extends AuthorizingRealm {
     @Autowired
     private JwtProperties jwtProperties;
     @Autowired
-    private SecurityService securityService;
+    private JwtService jwtService;
 
     @Override
     public boolean supports(AuthenticationToken token) {
@@ -37,7 +37,7 @@ class JwtRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) token;
         String jwtTokenString = (String) jwtAuthenticationToken.getCredentials();
-        String principal = securityService.parseJwtToken(jwtProperties.getKey(), jwtTokenString);
+        String principal = jwtService.parseJwtToken(jwtProperties.getKey(), jwtTokenString);
         if (StringUtils.isEmpty(principal)) {
             throw new AuthenticationException("jwt expired or info error!");
         }

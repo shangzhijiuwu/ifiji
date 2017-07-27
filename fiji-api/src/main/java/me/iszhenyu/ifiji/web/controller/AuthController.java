@@ -2,7 +2,7 @@ package me.iszhenyu.ifiji.web.controller;
 
 import me.iszhenyu.ifiji.exception.ValidationException;
 import me.iszhenyu.ifiji.model.UserDO;
-import me.iszhenyu.ifiji.service.SecurityService;
+import me.iszhenyu.ifiji.service.JwtService;
 import me.iszhenyu.ifiji.service.UserService;
 import me.iszhenyu.ifiji.web.config.security.JwtProperties;
 import me.iszhenyu.ifiji.web.form.RegisterForm;
@@ -31,7 +31,7 @@ public class AuthController extends BaseController {
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private SecurityService securityService;
+	private JwtService jwtService;
 
 	@RequestMapping(value = "register", method = RequestMethod.POST)
 	public String register(@Validated RegisterForm form, BindingResult bindingResult) {
@@ -56,7 +56,7 @@ public class AuthController extends BaseController {
 			throw new ValidationException("用户名或密码错误");
 		}
 		UserDO user =  userService.getUser(username);
-		String jwtTokenStr = securityService.generateJwtToken(user, jwtProperties.getKey(), jwtProperties.getTokenExpireDay());
+		String jwtTokenStr = jwtService.generateJwtToken(user, jwtProperties.getKey(), jwtProperties.getTokenExpireDay());
 		return new LoginVO(jwtTokenStr, user);
 	}
 

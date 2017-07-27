@@ -6,7 +6,6 @@ import me.iszhenyu.ifiji.model.UserDO;
 import me.iszhenyu.ifiji.util.RandomUtils;
 import me.iszhenyu.ifiji.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 
@@ -20,7 +19,7 @@ public class UserService {
 	private UserDao userDao;
 
 	@Autowired
-	private SecurityService securityService;
+	private JwtService jwtService;
 
 //	@Cacheable
 	public UserDO getUser(String username) {
@@ -34,7 +33,7 @@ public class UserService {
 
 	public UserDO registerUser(String principal, String credential) {
 		String salt = RandomUtils.randomNumeric(4);
-		String hashedPassword = securityService.encodePasswordWithSalt(credential, salt);
+		String hashedPassword = jwtService.encodePasswordWithSalt(credential, salt);
 		if (StringUtils.isMobile(principal)) {
 			String username = principal + "@";
 			return createUser(username, principal, hashedPassword, salt);

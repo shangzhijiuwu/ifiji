@@ -6,7 +6,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import me.iszhenyu.ifiji.model.UserDO;
 import me.iszhenyu.ifiji.security.RetryLimitHashedCredentialsMatcher;
-import me.iszhenyu.ifiji.util.RandomUtils;
 import me.iszhenyu.ifiji.util.StringUtils;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.slf4j.Logger;
@@ -21,9 +20,9 @@ import java.util.Date;
  * @since 2017/6/20
  */
 @Service
-public class SecurityService {
+public class JwtService {
 
-    private Logger logger = LoggerFactory.getLogger(SecurityService.class);
+    private Logger logger = LoggerFactory.getLogger(JwtService.class);
 
     @Autowired
     private RetryLimitHashedCredentialsMatcher credentialsMatcher;
