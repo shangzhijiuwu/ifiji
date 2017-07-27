@@ -107,24 +107,24 @@ public class StatelessConfiguration {
         return filterRegistrationBean;
     }
 
-    @Bean
-    public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
-        StatelessFilterFactoryBean factoryBean = new StatelessFilterFactoryBean(securityManager);
-        factoryBean.getFilters().put("jwtAuthc", new StatelessFilter(jwtProperties));
-        factoryBean.getFilters().put("csrf", new StatelessCSRFFilter());
-
-        //拦截器.
-        Map<String,String> filterChainDefinitionMap = new LinkedHashMap<>();
-        filterChainDefinitionMap.put("/favicon.ico", "anon");
-        filterChainDefinitionMap.put("/assets/**", "anon");
-        filterChainDefinitionMap.put("/error/**", "anon");
-        filterChainDefinitionMap.put("/auth/login", "anon");
-        filterChainDefinitionMap.put("/auth/register", "anon");
-        filterChainDefinitionMap.put("/auth/logout", "logout");
-        filterChainDefinitionMap.put("/**", "jwtAuthc");
-        factoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
-
-        return factoryBean;
-    }
+//    @Bean
+//    public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
+//        StatelessFilterFactoryBean factoryBean = new StatelessFilterFactoryBean(securityManager);
+//        factoryBean.getFilters().put("jwtAuthc", new StatelessFilter(jwtProperties));
+//        factoryBean.getFilters().put("csrf", new StatelessCSRFFilter());
+//
+//        //拦截器.
+//        Map<String,String> filterChainDefinitionMap = new LinkedHashMap<>();
+//        filterChainDefinitionMap.put("/favicon.ico", "anon");
+//        filterChainDefinitionMap.put("/assets/**", "anon");
+//        filterChainDefinitionMap.put("/error/**", "anon");
+//        filterChainDefinitionMap.put("/auth/login", "anon");
+//        filterChainDefinitionMap.put("/auth/register", "anon");
+//        filterChainDefinitionMap.put("/auth/logout", "logout");
+//        filterChainDefinitionMap.put("/**", "jwtAuthc");
+//        factoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+//
+//        return factoryBean;
+//    }
 
 }
