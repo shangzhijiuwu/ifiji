@@ -30,7 +30,7 @@ import java.util.Map;
  * @author zhen.yu
  * @since 2017/6/7
  */
-@Configuration
+//@Configuration
 public class StatelessConfiguration {
 
 //    // 不能定义成bean, 否则会添加到ApplicationFilterChain中, 这样所有的请求都会走一遍这个filter

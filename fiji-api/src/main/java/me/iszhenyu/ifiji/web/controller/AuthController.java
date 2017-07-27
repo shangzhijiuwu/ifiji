@@ -48,6 +48,7 @@ public class AuthController extends BaseController {
 						 @NotEmpty(message = "密码不能为空") String password) {
 		Subject subject = SecurityUtils.getSubject();
 		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+		token.setRememberMe(true);
 		try {
 			// 根据token类型, 这里实际是FijiRealm执行的登录
 			subject.login(token);
@@ -61,6 +62,7 @@ public class AuthController extends BaseController {
 
 	@RequestMapping("/logout")
 	public String logout() {
+		SecurityUtils.getSubject().logout();
 		return "登出成功";
 	}
 
