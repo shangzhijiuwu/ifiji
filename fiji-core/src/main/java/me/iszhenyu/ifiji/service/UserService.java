@@ -22,7 +22,7 @@ public class UserService {
 	@Autowired
 	private SecurityService securityService;
 
-	@Cacheable
+//	@Cacheable
 	public UserDO getUser(String username) {
 		if (StringUtils.isMobile(username)) {
 			return userDao.getByMobile(username);

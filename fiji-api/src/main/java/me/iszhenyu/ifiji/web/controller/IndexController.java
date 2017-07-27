@@ -13,9 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class IndexController extends BaseController {
     Logger logger = LoggerFactory.getLogger(IndexController.class);
 
-    @RequestMapping("/hello3")
+    @RequestMapping("/")
     public String hello3(){
         logger.info("just a test!");
-        return"hello3,Andy";
+        return "hello3,Andy";
+    }
+
+    @RequestMapping("/hello")
+    public String hello2() {
+        return "hello2";
     }
 }
