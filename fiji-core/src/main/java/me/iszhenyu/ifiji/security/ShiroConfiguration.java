@@ -22,6 +22,7 @@ import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.Cookie;
 import org.apache.shiro.web.servlet.SimpleCookie;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
@@ -84,9 +85,9 @@ public class ShiroConfiguration {
 	}
 
 	@Bean
-	public RetryLimitHashedCredentialsMatcher retryLimitHashedCredentialsMatcher(EhCacheManager cacheManager) {
+	public RetryLimitHashedCredentialsMatcher retryLimitHashedCredentialsMatcher() {
 		logger.debug("注入Shiro的凭证匹配器-->credentialsMatcher");
-		RetryLimitHashedCredentialsMatcher credentialsMatcher = new RetryLimitHashedCredentialsMatcher(cacheManager);
+		RetryLimitHashedCredentialsMatcher credentialsMatcher = new RetryLimitHashedCredentialsMatcher(shiroCacheManager());
 		credentialsMatcher.setHashAlgorithmName("MD5");
 		credentialsMatcher.setHashIterations(2);
 		credentialsMatcher.setStoredCredentialsHexEncoded(true);
@@ -98,12 +99,11 @@ public class ShiroConfiguration {
 	 */
 	@Bean
 	@Qualifier("retryLimitHashedCredentialsMatcher")
-	public ShiroRealm shiroRealm(DataSource dataSource,
-								 RetryLimitHashedCredentialsMatcher credentialsMatcher) {
+	public ShiroRealm shiroRealm(DataSource dataSource) {
 		logger.debug("注入Shiro的Realm-->shiroRealm");
 		ShiroRealm realm = new ShiroRealm();
 		realm.setDataSource(dataSource);
-		realm.setCredentialsMatcher(credentialsMatcher);
+		realm.setCredentialsMatcher(retryLimitHashedCredentialsMatcher());
 		return realm;
 	}
 
@@ -112,28 +112,39 @@ public class ShiroConfiguration {
 	 */
 
 	@Bean
-	public SessionValidationScheduler sessionValidationScheduler(DefaultSessionManager sessionManager) {
+	public SessionValidationScheduler sessionValidationScheduler() {
 		QuartzSessionValidationScheduler scheduler = new QuartzSessionValidationScheduler();
 		scheduler.setSessionValidationInterval(1800000);
-		scheduler.setSessionManager(sessionManager);
+		scheduler.setSessionManager(sessionManager());
 		return scheduler;
 	}
 
 	@Bean
-	public DefaultSessionManager sessionManager(SessionDAO sessionDAO) {
-		DefaultSessionManager sessionManager = new DefaultSessionManager();
+	public DefaultWebSessionManager sessionManager() {
+		DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
 		sessionManager.setGlobalSessionTimeout(1800000);
 		sessionManager.setDeleteInvalidSessions(true);
 		sessionManager.setSessionValidationSchedulerEnabled(true);
-		sessionManager.setSessionDAO(sessionDAO);
+		sessionManager.setSessionIdCookieEnabled(true);
+		sessionManager.setSessionIdCookie(sessionIdCookie());
+		sessionManager.setSessionDAO(sessionDAO());
 		return sessionManager;
 	}
 
 	@Bean
-	public SessionDAO sessionDAO(SessionIdGenerator sessionIdGenerator, EhCacheManager cacheManager) {
+	public SimpleCookie sessionIdCookie(){
+		SimpleCookie cookie = new SimpleCookie();
+		cookie.setHttpOnly(true);
+		cookie.setMaxAge(259200);
+		cookie.setName("sid");
+		return cookie;
+	}
+
+	@Bean
+	public SessionDAO sessionDAO() {
 		EnterpriseCacheSessionDAO dao = new EnterpriseCacheSessionDAO();
-		dao.setSessionIdGenerator(sessionIdGenerator);
-		dao.setCacheManager(cacheManager);
+		dao.setSessionIdGenerator(sessionIdGenerator());
+		dao.setCacheManager(shiroCacheManager());
 		dao.setActiveSessionsCacheName(ShiroCacheName.SESSION_CACHE);
 		return dao;
 	}
@@ -148,7 +159,7 @@ public class ShiroConfiguration {
 	 */
 
 	@Bean
-	public CookieRememberMeManager rememberMeManager(Cookie rememberMeCookie) {
+	public CookieRememberMeManager rememberMeManager() {
 		logger.info("注入Shiro的记住我(CookieRememberMeManager)管理器-->rememberMeManager");
 		CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
 		//rememberme cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度（128 256 512 位），通过以下代码可以获取
@@ -157,7 +168,7 @@ public class ShiroConfiguration {
 		//System.out.println(Base64.encodeToString(deskey.getEncoded()));
 		byte[] cipherKey = Base64.decode("rPNqM6uKFCyaL10AK51UkQ==");
 		cookieRememberMeManager.setCipherKey(cipherKey);
-		cookieRememberMeManager.setCookie(rememberMeCookie);
+		cookieRememberMeManager.setCookie(rememberMeCookie());
 		return cookieRememberMeManager;
 	}
 
@@ -176,16 +187,13 @@ public class ShiroConfiguration {
 	 * 配置安全管理器
 	 */
 	@Bean
-	public SecurityManager securityManager(ShiroRealm shiroRealm,
-										   EhCacheManager cacheManager,
-										   SessionManager sessionManager,
-										   RememberMeManager rememberMeManager) {
+	public SecurityManager securityManager(ShiroRealm shiroRealm) {
 		logger.debug("注入Shiro的Web过滤器-->securityManager");
 		DefaultSecurityManager sm = new DefaultWebSecurityManager();
 		sm.setRealm(shiroRealm);
-		sm.setCacheManager(cacheManager);
-		sm.setSessionManager(sessionManager);
-		sm.setRememberMeManager(rememberMeManager);
+		sm.setCacheManager(shiroCacheManager());
+		sm.setSessionManager(sessionManager());
+		sm.setRememberMeManager(rememberMeManager());
 		return sm;
 	}
 
