@@ -27,11 +27,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.web.filter.DelegatingFilterProxy;
 
 import javax.sql.DataSource;
 import java.util.LinkedHashMap;
@@ -112,23 +110,23 @@ public class ShiroConfiguration {
 	 */
 
 	@Bean
-	public SessionValidationScheduler sessionValidationScheduler() {
-		QuartzSessionValidationScheduler scheduler = new QuartzSessionValidationScheduler();
-		scheduler.setSessionValidationInterval(1800000);
-		scheduler.setSessionManager(sessionManager());
-		return scheduler;
-	}
-
-	@Bean
 	public DefaultWebSessionManager sessionManager() {
 		DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
 		sessionManager.setGlobalSessionTimeout(1800000);
 		sessionManager.setDeleteInvalidSessions(true);
 		sessionManager.setSessionValidationSchedulerEnabled(true);
+		sessionManager.setSessionValidationScheduler(sessionValidationScheduler());
 		sessionManager.setSessionIdCookieEnabled(true);
 		sessionManager.setSessionIdCookie(sessionIdCookie());
 		sessionManager.setSessionDAO(sessionDAO());
 		return sessionManager;
+	}
+
+	@Bean
+	public SessionValidationScheduler sessionValidationScheduler() {
+		QuartzSessionValidationScheduler scheduler = new QuartzSessionValidationScheduler();
+		scheduler.setSessionValidationInterval(1800000);
+		return scheduler;
 	}
 
 	@Bean
