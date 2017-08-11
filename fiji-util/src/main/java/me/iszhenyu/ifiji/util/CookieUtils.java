@@ -1,4 +1,7 @@
 package me.iszhenyu.ifiji.util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -8,28 +11,27 @@ import javax.servlet.http.HttpServletResponse;
  * @since 2017/8/11
  */
 public class CookieUtils {
+    private static Logger logger = LoggerFactory.getLogger(CookieUtils.class);
 
     /**
      * 设置cookie
      *
      * @param response
-     * @param name
-     *            cookie名字
-     * @param value
-     *            cookie值
-     * @param maxAge
-     *            cookie生命周期 以秒为单位
+     * @param name cookie名字
+     * @param value cookie值
+     * @param maxAge cookie生命周期 以秒为单位
      */
     public static void addCookie(HttpServletResponse response, String name,
                                  String value, int maxAge) {
         try {
             Cookie cookie = new Cookie(name, value);
-            if (maxAge > 0)
+            if (maxAge > 0) {
                 cookie.setMaxAge(maxAge);
+            }
             cookie.setPath("/");
             response.addCookie(cookie);
         } catch (Exception ex) {
-            LoggerUtils.error(CookieUtil.class, "创建Cookies发生异常！", ex);
+            logger.error("创建Cookies发生异常！", ex);
         }
     }
 
@@ -57,7 +59,7 @@ public class CookieUtils {
                 bool = true;
             }
         } catch (Exception ex) {
-            LoggerUtils.error(CookieUtil.class, "清空Cookies发生异常！", ex);
+            logger.error("清空Cookies发生异常！", ex);
         }
         return bool;
     }
@@ -85,7 +87,7 @@ public class CookieUtils {
                 bool = true;
             }
         } catch (Exception ex) {
-            LoggerUtils.error(CookieUtil.class, "清空Cookies发生异常！", ex);
+            logger.error("清空Cookies发生异常！", ex);
         }
         return bool;
     }
@@ -112,7 +114,7 @@ public class CookieUtils {
 
             }
         } catch (Exception ex) {
-            LoggerUtils.error(CookieUtil.class, "获取Cookies发生异常！", ex);
+            logger.error("获取Cookies发生异常！", ex);
         }
         return string;
     }
