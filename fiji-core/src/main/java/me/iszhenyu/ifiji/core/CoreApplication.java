@@ -1,4 +1,4 @@
-package me.iszhenyu.ifiji;
+package me.iszhenyu.ifiji.core;
 
 import me.iszhenyu.ifiji.core.dao.interceptor.AutoDateTimeInterceptor;
 import org.apache.ibatis.plugin.Interceptor;
@@ -14,7 +14,7 @@ import javax.sql.DataSource;
  */
 @EnableCaching  // 开启声明式缓存支持
 @SpringBootApplication
-public class BusinessApplication {
+public class CoreApplication {
 
 	@Bean
 	public Interceptor autoDateTimeInterceptor() {
