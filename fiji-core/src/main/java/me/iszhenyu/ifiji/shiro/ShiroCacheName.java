@@ -1,4 +1,4 @@
-package me.iszhenyu.ifiji.security;
+package me.iszhenyu.ifiji.shiro;
 
 /**
  * @author zhen.yu

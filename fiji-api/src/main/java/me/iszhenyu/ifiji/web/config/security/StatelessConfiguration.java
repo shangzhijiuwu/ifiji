@@ -1,8 +1,8 @@
 package me.iszhenyu.ifiji.web.config.security;
 
-import me.iszhenyu.ifiji.security.ShiroCacheName;
-import me.iszhenyu.ifiji.security.ShiroRealm;
-import me.iszhenyu.ifiji.security.RetryLimitHashedCredentialsMatcher;
+import me.iszhenyu.ifiji.shiro.ShiroCacheName;
+import me.iszhenyu.ifiji.shiro.ShiroRealm;
+import me.iszhenyu.ifiji.shiro.RetryLimitHashedCredentialsMatcher;
 import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.mgt.DefaultSecurityManager;
@@ -11,20 +11,16 @@ import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.DefaultSessionManager;
 import org.apache.shiro.session.mgt.SessionManager;
-import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.mgt.DefaultWebSubjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
 import javax.sql.DataSource;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * @author zhen.yu

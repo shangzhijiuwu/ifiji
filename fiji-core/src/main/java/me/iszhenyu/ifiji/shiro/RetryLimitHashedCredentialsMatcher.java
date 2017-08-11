@@ -1,4 +1,4 @@
-package me.iszhenyu.ifiji.security;
+package me.iszhenyu.ifiji.shiro;
 
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;

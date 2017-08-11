@@ -1,4 +1,4 @@
-package me.iszhenyu.ifiji.security;
+package me.iszhenyu.ifiji.shiro;
 
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -42,7 +42,7 @@ public class CustomFilterFactoryBean extends ShiroFilterFactoryBean {
 		}
 
 		if (!(securityManager instanceof WebSecurityManager)) {
-			throw new BeanInitializationException("The security manager done not implement the WebSecurityManager interface");
+			throw new BeanInitializationException("The shiro manager done not implement the WebSecurityManager interface");
 		}
 
 		FilterChainManager manager = createFilterChainManager();

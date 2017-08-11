@@ -5,7 +5,7 @@
     <parent>
         <artifactId>ifiji</artifactId>
         <groupId>me.iszhenyu</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>${ifiji.version}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>fiji-business</artifactId>
@@ -15,12 +15,12 @@
         <dependency>
             <groupId>me.iszhenyu</groupId>
             <artifactId>fiji-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${ifiji.version}</version>
         </dependency>
         <dependency>
             <groupId>me.iszhenyu</groupId>
             <artifactId>fiji-util</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${ifiji.version}</version>
         </dependency>
     </dependencies>
 
