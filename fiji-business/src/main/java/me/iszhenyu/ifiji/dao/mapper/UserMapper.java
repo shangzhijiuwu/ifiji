@@ -1,5 +1,6 @@
-package me.iszhenyu.ifiji.core.dao.mapper;
+package me.iszhenyu.ifiji.dao.mapper;
 
+import me.iszhenyu.ifiji.core.dao.BaseMapper;
 import me.iszhenyu.ifiji.model.UserDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

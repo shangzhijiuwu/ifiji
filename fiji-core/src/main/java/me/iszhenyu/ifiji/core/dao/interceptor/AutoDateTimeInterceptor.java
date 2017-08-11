@@ -1,6 +1,6 @@
 package me.iszhenyu.ifiji.core.dao.interceptor;
 
-import me.iszhenyu.ifiji.model.BaseDO;
+import me.iszhenyu.ifiji.core.model.BaseDO;
 import me.iszhenyu.ifiji.util.ReflectUtils;
 import me.iszhenyu.ifiji.util.TimeUtils;
 import org.apache.ibatis.executor.statement.RoutingStatementHandler;

@@ -1,4 +1,4 @@
-package me.iszhenyu.ifiji.model;
+package me.iszhenyu.ifiji.core.model;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

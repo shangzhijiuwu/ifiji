@@ -1,7 +1,6 @@
 package me.iszhenyu.ifiji.core.dao;
 
-import me.iszhenyu.ifiji.core.dao.mapper.BaseMapper;
-import me.iszhenyu.ifiji.model.BaseDO;
+import me.iszhenyu.ifiji.core.model.BaseDO;
 
 import java.io.Serializable;
 import java.util.Collection;

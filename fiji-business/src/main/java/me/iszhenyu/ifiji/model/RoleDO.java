@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import me.iszhenyu.ifiji.core.model.BaseDO;
 
 /**
  * @author zhen.yu

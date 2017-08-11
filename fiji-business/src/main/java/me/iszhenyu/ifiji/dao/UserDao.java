@@ -1,7 +1,8 @@
-package me.iszhenyu.ifiji.core.dao;
+package me.iszhenyu.ifiji.dao;
 
-import me.iszhenyu.ifiji.core.dao.mapper.BaseMapper;
-import me.iszhenyu.ifiji.core.dao.mapper.UserMapper;
+import me.iszhenyu.ifiji.core.dao.BaseDao;
+import me.iszhenyu.ifiji.core.dao.BaseMapper;
+import me.iszhenyu.ifiji.dao.mapper.UserMapper;
 import me.iszhenyu.ifiji.model.UserDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

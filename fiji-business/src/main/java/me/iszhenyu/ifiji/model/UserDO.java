@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import me.iszhenyu.ifiji.constant.UserStatus;
+import me.iszhenyu.ifiji.core.model.BaseDO;
 
 /**
  * Created by xiaoz on 2017/5/11.

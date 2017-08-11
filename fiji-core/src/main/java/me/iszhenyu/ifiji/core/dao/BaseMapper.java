@@ -1,4 +1,4 @@
-package me.iszhenyu.ifiji.core.dao.mapper;
+package me.iszhenyu.ifiji.core.dao;
 
 import java.io.Serializable;
 import java.util.Collection;
