@@ -1,4 +1,4 @@
-package me.iszhenyu.ifiji.constant;
+package me.iszhenyu.ifiji.core.exception;
 
 /**
  * @author zhen.yu

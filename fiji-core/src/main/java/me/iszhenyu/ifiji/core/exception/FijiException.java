@@ -1,6 +1,5 @@
 package me.iszhenyu.ifiji.core.exception;
 
-import me.iszhenyu.ifiji.constant.LogLevel;
 import me.iszhenyu.ifiji.util.StringUtils;
 import org.springframework.http.HttpStatus;
 
