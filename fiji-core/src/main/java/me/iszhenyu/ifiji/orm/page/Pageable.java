@@ -1,4 +1,4 @@
-package me.iszhenyu.ifiji.orm;
+package me.iszhenyu.ifiji.orm.page;
 
 import java.io.Serializable;
 
