@@ -1,7 +1,7 @@
 package me.iszhenyu.ifiji.service;
 
 import me.iszhenyu.ifiji.constant.UserStatus;
-import me.iszhenyu.ifiji.dao.UserDao;
+import me.iszhenyu.ifiji.core.dao.UserDao;
 import me.iszhenyu.ifiji.model.UserDO;
 import me.iszhenyu.ifiji.util.RandomUtils;
 import me.iszhenyu.ifiji.util.StringUtils;

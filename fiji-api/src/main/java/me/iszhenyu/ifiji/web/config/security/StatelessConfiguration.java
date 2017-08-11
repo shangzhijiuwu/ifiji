@@ -1,8 +1,8 @@
 package me.iszhenyu.ifiji.web.config.security;
 
-import me.iszhenyu.ifiji.shiro.ShiroCacheName;
-import me.iszhenyu.ifiji.shiro.ShiroRealm;
-import me.iszhenyu.ifiji.shiro.RetryLimitHashedCredentialsMatcher;
+import me.iszhenyu.ifiji.core.shiro.ShiroCacheName;
+import me.iszhenyu.ifiji.core.shiro.ShiroRealm;
+import me.iszhenyu.ifiji.core.shiro.RetryLimitHashedCredentialsMatcher;
 import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.mgt.DefaultSecurityManager;

@@ -22,7 +22,7 @@ spring:
       config: classpath:config/ehcache-fiji.xml
 mybatis:
   type-aliases-package: me.iszhenyu.ifiji.model
-  type-handlers-package: me.iszhenyu.ifiji.dao.typehandler
+  type-handlers-package: me.iszhenyu.ifiji.core.dao.typehandler
   mapper-locations: classpath:mapper/*.xml
   configuration:
     default-fetch-size: 100

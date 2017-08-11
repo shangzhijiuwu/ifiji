@@ -1,6 +1,6 @@
 package me.iszhenyu.ifiji.web;
 
-import me.iszhenyu.ifiji.exception.FijiException;
+import me.iszhenyu.ifiji.core.exception.FijiException;
 import me.iszhenyu.ifiji.web.vo.ResponseVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

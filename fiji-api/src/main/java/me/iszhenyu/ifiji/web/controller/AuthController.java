@@ -1,6 +1,6 @@
 package me.iszhenyu.ifiji.web.controller;
 
-import me.iszhenyu.ifiji.exception.ValidationException;
+import me.iszhenyu.ifiji.core.exception.ValidationException;
 import me.iszhenyu.ifiji.model.UserDO;
 import me.iszhenyu.ifiji.service.JwtService;
 import me.iszhenyu.ifiji.service.UserService;

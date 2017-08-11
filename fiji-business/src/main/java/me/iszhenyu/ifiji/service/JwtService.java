@@ -5,7 +5,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import me.iszhenyu.ifiji.model.UserDO;
-import me.iszhenyu.ifiji.shiro.RetryLimitHashedCredentialsMatcher;
+import me.iszhenyu.ifiji.core.shiro.RetryLimitHashedCredentialsMatcher;
 import me.iszhenyu.ifiji.util.StringUtils;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.slf4j.Logger;

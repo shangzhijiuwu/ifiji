@@ -1,6 +1,6 @@
 package me.iszhenyu.ifiji.web.validator;
 
-import me.iszhenyu.ifiji.exception.IllegalArgumentException;
+import me.iszhenyu.ifiji.core.exception.IllegalArgumentException;
 import me.iszhenyu.ifiji.util.StringUtils;
 import me.iszhenyu.ifiji.web.validator.annotation.NotEmpty;
 import org.springframework.core.MethodParameter;
