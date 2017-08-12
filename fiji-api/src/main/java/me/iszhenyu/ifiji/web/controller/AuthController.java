@@ -2,12 +2,9 @@ package me.iszhenyu.ifiji.web.controller;
 
 import me.iszhenyu.ifiji.core.exception.ValidationException;
 import me.iszhenyu.ifiji.model.User;
-import me.iszhenyu.ifiji.service.JwtService;
 import me.iszhenyu.ifiji.service.UserService;
-import me.iszhenyu.ifiji.web.config.security.JwtProperties;
 import me.iszhenyu.ifiji.web.form.RegisterForm;
 import me.iszhenyu.ifiji.web.validator.annotation.NotEmpty;
-import me.iszhenyu.ifiji.web.vo.LoginVO;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -27,11 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController extends BaseController {
 
 	@Autowired
-	JwtProperties jwtProperties;
-	@Autowired
 	private UserService userService;
-	@Autowired
-	private JwtService jwtService;
 
 	@RequestMapping(value = "register", method = RequestMethod.POST)
 	public String register(@Validated RegisterForm form, BindingResult bindingResult) {
@@ -44,7 +37,7 @@ public class AuthController extends BaseController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public LoginVO login(@NotEmpty(message = "用户名不能为空") String username,
+	public User login(@NotEmpty(message = "用户名不能为空") String username,
 						 @NotEmpty(message = "密码不能为空") String password) {
 		Subject subject = SecurityUtils.getSubject();
 		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
@@ -55,9 +48,7 @@ public class AuthController extends BaseController {
 		} catch (AuthenticationException e) {
 			throw new ValidationException("用户名或密码错误");
 		}
-		User user =  userService.getUser(username);
-		String jwtTokenStr = jwtService.generateJwtToken(user, jwtProperties.getKey(), jwtProperties.getTokenExpireDay());
-		return new LoginVO(jwtTokenStr, user);
+		return userService.getUser(username);
 	}
 
 	@RequestMapping("/logout")
