@@ -4,7 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import me.iszhenyu.ifiji.model.UserDO;
+import me.iszhenyu.ifiji.model.User;
 import me.iszhenyu.ifiji.core.shiro.RetryLimitHashedCredentialsMatcher;
 import me.iszhenyu.ifiji.util.StringUtils;
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -27,7 +27,7 @@ public class JwtService {
     @Autowired
     private RetryLimitHashedCredentialsMatcher credentialsMatcher;
 
-    public String generateJwtToken(UserDO user, String tokenKey, int expireDays) {
+    public String generateJwtToken(User user, String tokenKey, int expireDays) {
         if (expireDays <= 0) {
             expireDays = 10;
         }

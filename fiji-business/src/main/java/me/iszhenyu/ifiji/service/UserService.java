@@ -2,7 +2,7 @@ package me.iszhenyu.ifiji.service;
 
 import me.iszhenyu.ifiji.constant.UserStatus;
 import me.iszhenyu.ifiji.dao.UserDao;
-import me.iszhenyu.ifiji.model.UserDO;
+import me.iszhenyu.ifiji.model.User;
 import me.iszhenyu.ifiji.util.RandomUtils;
 import me.iszhenyu.ifiji.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class UserService {
 	private JwtService jwtService;
 
 //	@Cacheable
-	public UserDO getUser(String username) {
+	public User getUser(String username) {
 		if (StringUtils.isMobile(username)) {
 			return userDao.getByMobile(username);
 		} else if (StringUtils.isEmail(username)) {
@@ -31,7 +31,7 @@ public class UserService {
 		return userDao.getByUsername(username);
 	}
 
-	public UserDO registerUser(String principal, String credential) {
+	public User registerUser(String principal, String credential) {
 		String salt = RandomUtils.randomNumeric(4);
 		String hashedPassword = jwtService.encodePasswordWithSalt(credential, salt);
 		if (StringUtils.isMobile(principal)) {
@@ -41,8 +41,8 @@ public class UserService {
 		return createUser(principal, null, hashedPassword, salt);
 	}
 
-	private UserDO createUser(String username, String mobile, String password, String salt) {
-		UserDO user = new UserDO();
+	private User createUser(String username, String mobile, String password, String salt) {
+		User user = new User();
 		user.setUsername(username);
 		user.setMobileNumber(mobile);
 		user.setPasswordHash(password);

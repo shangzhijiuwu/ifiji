@@ -15,7 +15,9 @@ import me.iszhenyu.ifiji.core.model.BaseDO;
 @Getter
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class UserDO extends BaseDO {
+public class User extends BaseDO {
+	private static final long serialVersionUID = -799579583374926180L;
+
 	private String username;
 	@JsonIgnore
 	private String passwordHash;

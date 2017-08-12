@@ -1,7 +1,7 @@
 package me.iszhenyu.ifiji.web.controller;
 
 import me.iszhenyu.ifiji.core.exception.ValidationException;
-import me.iszhenyu.ifiji.model.UserDO;
+import me.iszhenyu.ifiji.model.User;
 import me.iszhenyu.ifiji.service.JwtService;
 import me.iszhenyu.ifiji.service.UserService;
 import me.iszhenyu.ifiji.web.config.security.JwtProperties;
@@ -55,7 +55,7 @@ public class AuthController extends BaseController {
 		} catch (AuthenticationException e) {
 			throw new ValidationException("用户名或密码错误");
 		}
-		UserDO user =  userService.getUser(username);
+		User user =  userService.getUser(username);
 		String jwtTokenStr = jwtService.generateJwtToken(user, jwtProperties.getKey(), jwtProperties.getTokenExpireDay());
 		return new LoginVO(jwtTokenStr, user);
 	}

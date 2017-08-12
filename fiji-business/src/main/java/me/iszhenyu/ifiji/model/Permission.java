@@ -14,9 +14,8 @@ import me.iszhenyu.ifiji.core.model.BaseDO;
 @Getter
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class PermissionDO extends BaseDO {
-    private String name;
-    private String url;
-    private String permission;
-
+public class Permission extends BaseDO {
+    private static final long serialVersionUID = 6743485905828813917L;
+    private String name;  // 操作名称
+    private String url;   // 操作url
 }

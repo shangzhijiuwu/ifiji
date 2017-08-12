@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -15,7 +16,8 @@ import java.util.Date;
 @Getter
 @EqualsAndHashCode
 @ToString
-public class BaseDO {
+public class BaseDO implements Serializable {
+	private static final long serialVersionUID = 5017546373479056007L;
 	protected Long id;
 	protected Boolean deleted; 	// 删除标记
 	protected Date gmtCreated; 	// 创建时间
