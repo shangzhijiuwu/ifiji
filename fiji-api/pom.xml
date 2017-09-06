@@ -17,6 +17,11 @@
             <artifactId>fiji-business</artifactId>
             <version>${ifiji.version}</version>
         </dependency>
+        <dependency>
+            <groupId>me.iszhenyu</groupId>
+            <artifactId>fiji-util</artifactId>
+            <version>${ifiji.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

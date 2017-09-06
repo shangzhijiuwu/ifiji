@@ -8,7 +8,7 @@
         <!--<result property="deleted" column="is_deleted"/>-->
     <!--</resultMap>-->
 
-    <insert id="insert" parameterType="UserDO" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
       INSERT INTO sys_user
         (username, password_hash, password_salt, mobile_number, email, avatar_url, status, deleted, gmt_created, gmt_modified)
       VALUES
