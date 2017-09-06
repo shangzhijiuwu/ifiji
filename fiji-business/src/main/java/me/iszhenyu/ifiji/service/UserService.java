@@ -6,6 +6,7 @@ import me.iszhenyu.ifiji.model.User;
 import me.iszhenyu.ifiji.util.RandomUtils;
 import me.iszhenyu.ifiji.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 
@@ -21,7 +22,6 @@ public class UserService {
 	@Autowired
 	private JwtService jwtService;
 
-//	@Cacheable
 	public User getUser(String username) {
 		if (StringUtils.isMobile(username)) {
 			return userDao.getByMobile(username);

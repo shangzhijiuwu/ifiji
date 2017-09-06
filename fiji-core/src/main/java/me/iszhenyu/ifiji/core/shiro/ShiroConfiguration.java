@@ -109,7 +109,6 @@ public class ShiroConfiguration {
 		sessionManager.setGlobalSessionTimeout(1800000);
 		sessionManager.setDeleteInvalidSessions(true);
 		sessionManager.setSessionValidationSchedulerEnabled(true);
-		sessionManager.setSessionValidationScheduler(sessionValidationScheduler());
 		sessionManager.setSessionIdCookieEnabled(true);
 		sessionManager.setSessionIdCookie(sessionIdCookie());
 		sessionManager.setSessionDAO(sessionDAO());
@@ -120,6 +119,7 @@ public class ShiroConfiguration {
 	public SessionValidationScheduler sessionValidationScheduler() {
 		QuartzSessionValidationScheduler scheduler = new QuartzSessionValidationScheduler();
 		scheduler.setSessionValidationInterval(1800000);
+		scheduler.setSessionManager(sessionManager());
 		return scheduler;
 	}
 
@@ -202,6 +202,7 @@ public class ShiroConfiguration {
 		filterChainDefinitionMap.put("/favicon.ico", "anon");
 		filterChainDefinitionMap.put("/assets/**", "anon");
 		filterChainDefinitionMap.put("/error/**", "anon");
+		filterChainDefinitionMap.put("/user/**", "anon");
 		filterChainDefinitionMap.put("/auth/login", "anon");
 		filterChainDefinitionMap.put("/auth/register", "anon");
 		filterChainDefinitionMap.put("/auth/logout", "logout");
