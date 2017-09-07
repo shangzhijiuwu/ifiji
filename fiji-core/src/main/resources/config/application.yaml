@@ -17,10 +17,10 @@ spring:
       min-idle: 0
       max-active: 8
     timeout: 0
-  cache:
+#  cache:
 #    ehcache:
 #      config: classpath:config/ehcache-fiji.xml
-    type: redis
+#    type: redis
 mybatis:
   type-aliases-package: me.iszhenyu.ifiji.model
   type-handlers-package: me.iszhenyu.ifiji.core.dao.typehandler
