@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
  * @author zhen.yu
  * @since 2017/9/8
  */
-public class CustomKeyGenerator implements KeyGenerator {
+class CustomKeyGenerator implements KeyGenerator {
 
     @Override
     public Object generate(Object target, Method method, Object... params) {
