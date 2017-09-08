@@ -4,10 +4,6 @@ server:
   tomcat:
     uri-encoding: UTF-8
 spring:
-  jackson:
-    date-format: "yyyy-MM-dd HH:mm:ss"
-    property-naming-strategy: CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES
-    default-property-inclusion: non_null
   thymeleaf:
     cache: false
   profiles:

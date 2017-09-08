@@ -50,8 +50,8 @@ public class RedisCacheConfiguration extends CachingConfigurerSupport {
         return cacheManager;
     }
 
-//    @Override
-//    public KeyGenerator keyGenerator() {
-//        return new CustomKeyGenerator();
-//    }
+    @Override
+    public KeyGenerator keyGenerator() {
+        return new CustomKeyGenerator();
+    }
 }

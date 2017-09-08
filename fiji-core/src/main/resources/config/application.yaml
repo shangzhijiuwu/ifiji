@@ -1,4 +1,8 @@
 spring:
+  jackson:
+    date-format: "yyyy-MM-dd HH:mm:ss"
+    property-naming-strategy: CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES
+    default-property-inclusion: non_null
   datasource:
     name: ifiji
     url: jdbc:mysql://127.0.0.1:3306/base_on_springboot
