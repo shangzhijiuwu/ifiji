@@ -2,6 +2,7 @@ package me.iszhenyu.ifiji.core.cache;
 
 import me.iszhenyu.ifiji.core.cache.redis.JsonRedisSerializer;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,7 @@ import java.net.UnknownHostException;
  * @since 2017/9/7
  */
 @Configuration
+@EnableCaching  // 开启声明式缓存支持
 public class RedisCacheConfiguration extends CachingConfigurerSupport {
 
     private class CustomRedisTemplate extends RedisTemplate<String, Object> {
@@ -48,8 +50,8 @@ public class RedisCacheConfiguration extends CachingConfigurerSupport {
         return cacheManager;
     }
 
-    @Override
-    public KeyGenerator keyGenerator() {
-        return new CustomKeyGenerator();
-    }
+//    @Override
+//    public KeyGenerator keyGenerator() {
+//        return new CustomKeyGenerator();
+//    }
 }

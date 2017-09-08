@@ -13,9 +13,9 @@ import javax.sql.DataSource;
 import java.util.List;
 
 /**
- * Created by xiaoz on 2017/5/21.
+ * @author zhen.yu
+ * @since 2017/5/21
  */
-@EnableCaching  // 开启声明式缓存支持
 @SpringBootApplication
 public class CoreApplication {
 
