@@ -19,7 +19,7 @@ import java.net.UnknownHostException;
  * @since 2017/9/7
  */
 @Configuration
-@EnableCaching  // 开启声明式缓存支持
+@EnableCaching
 public class RedisCacheConfiguration extends CachingConfigurerSupport {
 
     private class CustomRedisTemplate extends RedisTemplate<String, Object> {
@@ -50,6 +50,7 @@ public class RedisCacheConfiguration extends CachingConfigurerSupport {
         return cacheManager;
     }
 
+    @Bean
     @Override
     public KeyGenerator keyGenerator() {
         return new CustomKeyGenerator();
