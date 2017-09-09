@@ -50,13 +50,13 @@ public class ShiroConfiguration {
 	 * 需借助SpringAOP扫描使用Shiro注解的类,并在必要时进行安全逻辑验证
 	 * 配置以下两个bean(DefaultAdvisorAutoProxyCreator(可选)和AuthorizationAttributeSourceAdvisor)即可实现此功能
 	 */
-	@Bean
-	@DependsOn({"lifecycleBeanPostProcessor"})
-	public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
-		DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
-		defaultAdvisorAutoProxyCreator.setProxyTargetClass(true);
-		return defaultAdvisorAutoProxyCreator;
-	}
+//	@Bean
+//	@DependsOn({"lifecycleBeanPostProcessor"})
+//	public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
+//		DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
+//		defaultAdvisorAutoProxyCreator.setProxyTargetClass(true);
+//		return defaultAdvisorAutoProxyCreator;
+//	}
 
 	@Bean
 	public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager){
