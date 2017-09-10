@@ -29,3 +29,5 @@ mybatis:
     default-fetch-size: 100
     default-statement-timeout: 30
     map-underscore-to-camel-case: true
+logging:
+  config: classpath:logback/logback-spring.xml
